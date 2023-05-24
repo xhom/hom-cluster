@@ -1,0 +1,23 @@
+server:
+  port: 8880
+spring:
+  application:
+    name: hom-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8000
+        #group: HOM_GATEWAY_GROUP
+        #namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      routes:
+        - id: hom-discovery
+          #固定地址写法： uri: http://127.0.0.1:8002
+          uri: lb://hom-discovery
+          predicates:
+            - Path=/discovery/**
+          filters:
+            - StripPrefix=1

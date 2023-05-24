@@ -1,0 +1,16 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: hom-discovery
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8000
+        #group: HOM_DISCOVERY_GROUP
+        #namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+      config:
+        server-addr: 127.0.0.1:8000
+        file-extension: yaml
+        group: HOM_DISCOVERY_GROUP
+        namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
