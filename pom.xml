@@ -37,6 +37,7 @@
         <module>hom-auth</module>
         <module>hom-gateway</module>
         <module>hom-discovery</module>
+        <module>hom-common-mapper</module>
     </modules>
 
     <dependencyManagement>
@@ -62,6 +63,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.44</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -75,10 +86,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.71</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
 
