@@ -1,5 +1,6 @@
 package hom.cluster.auth.component;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import hom.cluster.auth.model.Permission;
 import hom.cluster.auth.model.LocalUser;
@@ -24,9 +25,8 @@ import java.util.stream.Collectors;
  */
 @Component
 public class SecurityUserDetailsService implements UserDetailsService {
-    /*@Autowired
-    private PasswordEncoder passwordEncoder;*/
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
     @Autowired
@@ -34,10 +34,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        /*String pwd = "123456";
-        String password = passwordEncoder.encode(pwd);
-        return User.withUsername(username).password(password).authorities("admin","user").build();*/
-
         LocalUser localUser = userService.getUserByUsername(username);
         if (Objects.isNull(localUser)) {
             return null;
@@ -51,9 +47,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
             codes.toArray(authorities);
         }
         //身份令牌
-        //String principal = JSON.toJSONString(localUser);
-        return User.withUsername(username).password(localUser.getPassword()).authorities(authorities).build();
+        String principal = JSON.toJSONString(localUser);
+        String password = passwordEncoder.encode(localUser.getPassword());
+        return User.withUsername(principal).password(password).authorities(authorities).build();
     }
-
-
 }

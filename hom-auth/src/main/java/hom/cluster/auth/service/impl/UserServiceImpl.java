@@ -2,6 +2,7 @@ package hom.cluster.auth.service.impl;
 
 import hom.cluster.auth.model.LocalUser;
 import hom.cluster.auth.service.UserService;
+import hom.cluster.auth.simulate.VirtualDB;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     @Override
     public LocalUser getUserByUsername(String username) {
-        return null;
+        return VirtualDB.getUser(username);
     }
 }

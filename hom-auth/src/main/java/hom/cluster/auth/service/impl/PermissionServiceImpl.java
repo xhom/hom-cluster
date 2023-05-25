@@ -2,6 +2,7 @@ package hom.cluster.auth.service.impl;
 
 import hom.cluster.auth.model.Permission;
 import hom.cluster.auth.service.PermissionService;
+import hom.cluster.auth.simulate.VirtualDB;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,6 @@ import java.util.List;
 public class PermissionServiceImpl implements PermissionService {
     @Override
     public List<Permission> listPermissionsByUserId(Long userId) {
-        return null;
+        return VirtualDB.getPermissions(userId);
     }
 }
