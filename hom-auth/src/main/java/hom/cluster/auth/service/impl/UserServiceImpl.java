@@ -21,8 +21,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public LocalUser getUserByUsername(String username) {
 
-        return localUserMapper.selectOne(Querier.<LocalUser>query().eq("username", username));
+        LocalUser user =  localUserMapper.selectOne(Querier.<LocalUser>query().eq("username", username));
 
+
+        return user;
         //return VirtualDB.getUser(username);
     }
 }

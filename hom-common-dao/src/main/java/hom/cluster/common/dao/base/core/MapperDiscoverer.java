@@ -40,11 +40,11 @@ public class MapperDiscoverer implements ApplicationListener<ContextRefreshedEve
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         ApplicationContext applicationContext = event.getApplicationContext();
-        if(Objects.nonNull(applicationContext.getParent())){
-            return;
-        }
         @SuppressWarnings("rawtypes")
         Map<String, BaseMapper> mappers = applicationContext.getBeansOfType(BaseMapper.class);
+        if(CollectionUtils.isEmpty(mappers)){
+            return;
+        }
         Map<String, List<MappedStatement>> insertMappedStatements = getInsertMappedStatements();
         mappers.forEach((name, proxyMapper) -> {
             Class<?> mapperType = proxyMapper.getClass().getInterfaces()[0];
