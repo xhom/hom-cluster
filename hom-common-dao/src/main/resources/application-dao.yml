@@ -7,4 +7,4 @@ spring:
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: hom.cluster.common.mapper.entity
+  type-aliases-package: hom.cluster.common.dao.entity

@@ -1,9 +1,10 @@
 package hom.cluster.auth.simulate;
 
-import hom.cluster.auth.model.LocalUser;
 import hom.cluster.auth.model.Permission;
+import hom.cluster.common.dao.entity.LocalUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,9 +18,10 @@ public class VirtualDB {
     private static final List<Permission> permissionList = new ArrayList<>();
 
     static {
-        userList.add(new LocalUser(1L, "zhangSan", "123456"));
-        userList.add(new LocalUser(2L, "liSi", "123abc"));
-        userList.add(new LocalUser(3L, "wangWu", "abc123"));
+        Date now = new Date();
+        userList.add(new LocalUser(1L, "zhangSan", "123456", "zs@q.com", "17712338977", now, now, null));
+        userList.add(new LocalUser(2L, "liSi", "123abc", "ls@q.com", "19912338977", now, now, null));
+        userList.add(new LocalUser(3L, "wangWu", "abc123", "ww@q.com", "18812338977", now, now, null));
 
         permissionList.add(new Permission(1L, 1L, "User"));
         permissionList.add(new Permission(2L, 1L, "Admin"));

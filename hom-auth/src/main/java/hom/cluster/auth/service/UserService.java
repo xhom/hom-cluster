@@ -1,6 +1,7 @@
 package hom.cluster.auth.service;
 
-import hom.cluster.auth.model.LocalUser;
+
+import hom.cluster.common.dao.entity.LocalUser;
 
 /**
  * @author visy.wang

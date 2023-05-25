@@ -40,5 +40,9 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <dependency>
+            <groupId>hom.cluster</groupId>
+            <artifactId>hom-common-dao</artifactId>
+        </dependency>
     </dependencies>
 </project>
