@@ -1,5 +1,6 @@
 package hom.cluster.auth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -25,6 +26,9 @@ import java.util.Collections;
  */
 @Configuration
 public class TokenConfig {
+    @Autowired
+    private DataSource dataSource;
+
     /**
      * 秘钥串
      */
@@ -42,7 +46,7 @@ public class TokenConfig {
         //JwtTokenStore：这种方式比较特殊，这是一种无状态方式的存储，不进行内存、数据库存储，只是JWT中携带全面的用户信息，保存在jwt中携带过去校验就可以
         //RedisTokenStore：将 access_token 存到 redis 中
 
-        return new InMemoryTokenStore();
+        return new JdbcTokenStore(dataSource);
     }
 
     /*@Bean

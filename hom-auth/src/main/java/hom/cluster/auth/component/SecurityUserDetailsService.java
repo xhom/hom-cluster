@@ -48,7 +48,8 @@ public class SecurityUserDetailsService implements UserDetailsService {
         }
         //身份令牌
         String principal = JSON.toJSONString(localUser);
+        System.out.println("principal:" + principal);
         String password = passwordEncoder.encode(localUser.getPassword());
-        return User.withUsername(principal).password(password).authorities(authorities).build();
+        return User.withUsername(username).password(password).authorities(authorities).build();
     }
 }
