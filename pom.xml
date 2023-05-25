@@ -38,6 +38,7 @@
         <module>hom-gateway</module>
         <module>hom-discovery</module>
         <module>hom-common-dao</module>
+        <module>hom-common-model</module>
     </modules>
 
     <dependencyManagement>

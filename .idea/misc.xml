@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/hom-discovery/pom.xml" />
         <option value="$PROJECT_DIR$/hom-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/hom-auth/pom.xml" />
+        <option value="$PROJECT_DIR$/hom-common-model/pom.xml" />
       </list>
     </option>
   </component>

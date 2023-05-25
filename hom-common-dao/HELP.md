@@ -1,4 +1,9 @@
-#### 使用说明
+### hom-common-dao
+
+#### 项目介绍：
+>通用的数据持久化层，基于MyBatis，包含通用的Mapper和PO(POJO)
+
+##### 使用说明:
 * 宿主项目定义：引用了当前模块的项目
 * 配置文件必须放在resources/config目录下，不然宿主项目不能读取到这些配置
 * 在宿主项目的启动类上需添加@MapperScan("hom.cluster.common.dao.mapper")才能扫描到此模块定义的Mapper
