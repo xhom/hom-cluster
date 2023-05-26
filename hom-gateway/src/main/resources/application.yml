@@ -9,7 +9,7 @@ spring:
       username: client
       password: h363WSxGId3x8QKBrAq9J1cKx5x9QpUq
       discovery:
-        group: HOM_GATEWAY_GROUP
+        group: HOM_DEV_GROUP
         namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
     loadbalancer:
       ribbon:
@@ -24,6 +24,7 @@ spring:
             - StripPrefix=1
         - id: hom-service-a
           #固定地址写法： uri: http://127.0.0.1:8002
+          #Tips：nacos的默认调用机制是同namespace下的同group的服务才可以相互调用
           uri: lb://hom-service-a
           predicates:
             - Path=/a/**

@@ -9,5 +9,5 @@ spring:
       username: client
       password: h363WSxGId3x8QKBrAq9J1cKx5x9QpUq
       discovery:
-        group: HOM_AUTH_GROUP
+        group: HOM_DEV_GROUP
         namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
