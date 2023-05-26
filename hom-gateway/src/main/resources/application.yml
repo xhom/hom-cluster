@@ -16,6 +16,12 @@ spring:
         enabled: false
     gateway:
       routes:
+        - id: hom-auth
+          uri: lb://hom-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
         - id: hom-service-a
           #固定地址写法： uri: http://127.0.0.1:8002
           uri: lb://hom-service-a
