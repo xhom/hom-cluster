@@ -5,7 +5,9 @@ spring:
     name: hom-auth
   cloud:
     nacos:
+      server-addr: 127.0.0.1:8000
+      username: client
+      password: h363WSxGId3x8QKBrAq9J1cKx5x9QpUq
       discovery:
-        server-addr: 127.0.0.1:8000
         group: HOM_AUTH_GROUP
         namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
