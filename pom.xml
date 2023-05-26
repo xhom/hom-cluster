@@ -43,6 +43,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot 依赖集合 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -50,6 +51,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- Spring Cloud 依赖集合 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -57,6 +59,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- Spring Cloud Alibaba 依赖集合 -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -64,16 +67,25 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- bootstrap配置文件启动需要的依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <!-- MyBatis -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>2.1.1</version>
             </dependency>
+            <!-- MySQL JDBC驱动 -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.44</version>
             </dependency>
+            <!-- 以下为自有项目的依赖 -->
             <dependency>
                 <groupId>hom.cluster</groupId>
                 <artifactId>hom-common-dao</artifactId>
@@ -98,11 +110,13 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+        <!-- Alibaba fast JSON -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
