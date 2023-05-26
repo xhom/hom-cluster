@@ -9,8 +9,23 @@ spring:
         server-addr: 127.0.0.1:8000
         group: HOM_SERVICE_GROUP
         namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+        #Nacos(Version 2.2.2)服务默认是不需要密码就可以连接的
+        #需要修改Nacos服务conf目录下的application.properties文件
+        #具体修改项如下：
+        #nacos.core.auth.enabled=true //启用密码
+        #nacos.core.auth.system.type=nacos
+        #nacos.core.auth.plugin.nacos.token.secret.key=随机Base64不小于32位
+        #---将下面这两个配置项分别作为Header头的key和value，添加到Header可绕过权限校验，可以理解为一个自定义的固定 Token
+        #nacos.core.auth.server.identity.key=xxx
+        #nacos.core.auth.server.identity.value=xxx
+        #用户需要前端配置：权限控制-用户列表-创建用户,Tips:注意给用户分配对应命名空间的权限
+        username: client
+        password: h363WSxGId3x8QKBrAq9J1cKx5x9QpUq
       config:
         server-addr: 127.0.0.1:8000
         file-extension: yaml
         group: HOM_SERVICE_GROUP
         namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+        #获取配置同样需要密码验证
+        username: client
+        password: h363WSxGId3x8QKBrAq9J1cKx5x9QpUq
