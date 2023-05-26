@@ -52,5 +52,9 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
+        <dependency>
+            <groupId>hom.cluster</groupId>
+            <artifactId>hom-common-dao</artifactId>
+        </dependency>
     </dependencies>
 </project>

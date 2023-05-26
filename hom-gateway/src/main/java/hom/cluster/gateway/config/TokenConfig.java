@@ -1,34 +1,26 @@
 package hom.cluster.gateway.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+
+import javax.sql.DataSource;
 
 /**
  * @author visy.wang
- * @description: 令牌配置
+ * @description: 令牌存储配置
  * @date 2023/5/24 15:07
  */
 @Configuration
 public class TokenConfig {
-    /**
-     * 秘钥串
-     */
-    private static final String SIGNING_KEY = "uaa";
-
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+        //将Token保存枣数据库
+        return new JdbcTokenStore(dataSource);
     }
-
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(SIGNING_KEY);
-        return converter;
-    }
-
 }
