@@ -10,10 +10,20 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BaseErrorCodeEnum {
+public enum BaseErrorCode implements ErrorCode {
     FAILURE(0, "操作失败"),
     SUCCESS(1, "操作成功");
 
     private final Integer code;
     private final String msg;
+
+    @Override
+    public Integer code() {
+        return code;
+    }
+
+    @Override
+    public String msg() {
+        return msg;
+    }
 }

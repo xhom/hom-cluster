@@ -1,6 +1,7 @@
 package hom.cluster.common.base.res;
 
-import hom.cluster.common.base.code.BaseErrorCodeEnum;
+import hom.cluster.common.base.code.BaseErrorCode;
+import hom.cluster.common.base.code.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -21,27 +22,27 @@ public class Result {
         return success(null);
     }
     public static Result success(Object data){
-        return success(BaseErrorCodeEnum.SUCCESS, data);
+        return success(BaseErrorCode.SUCCESS, data);
     }
-    public static Result success(BaseErrorCodeEnum codeEnum, Object data){
-        return new Result(true, codeEnum.getCode(), codeEnum.getMsg(), data);
+    public static Result success(ErrorCode errorCode, Object data){
+        return new Result(true, errorCode.code(), errorCode.msg(), data);
     }
 
 
     public static Result failure(){
-        return failure(BaseErrorCodeEnum.FAILURE);
+        return failure(BaseErrorCode.FAILURE);
     }
     public static Result failure(String message){
         return failure(message, null);
     }
     public static Result failure(String message, Object data){
-        return failure(BaseErrorCodeEnum.FAILURE.getCode(), message, data);
+        return failure(BaseErrorCode.FAILURE.getCode(), message, data);
     }
-    public static Result failure(BaseErrorCodeEnum codeEnum){
-        return failure(codeEnum, null);
+    public static Result failure(ErrorCode errorCode){
+        return failure(errorCode, null);
     }
-    public static Result failure(BaseErrorCodeEnum codeEnum, Object data){
-        return failure(codeEnum.getCode(), codeEnum.getMsg(), data);
+    public static Result failure(ErrorCode errorCode, Object data){
+        return failure(errorCode.code(), errorCode.msg(), data);
     }
     public static Result failure(Integer code, String message){
         return failure(code, message, null);
