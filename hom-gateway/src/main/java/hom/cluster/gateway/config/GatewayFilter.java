@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,8 +32,9 @@ import java.util.Map;
  * @date 2023/5/24 15:10
  */
 @Slf4j
+@Order(0)//数字越小优先级越高，默认按照声明顺序从1开始递增
 @Component
-public class GatewayFilter implements GlobalFilter, Ordered {
+public class GatewayFilter implements GlobalFilter {
     @Autowired
     private TokenStore tokenStore;
 
@@ -77,12 +78,11 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             log.info("无效的token: {}, error: {}", token, e.getMessage());
             Result result = Result.failure(HttpStatus.UNAUTHORIZED.value(), "无效Token", token);
             return write2response(exchange, result);
+        }catch (Exception e){
+            log.info("token解析失败: {}, error: {}", token, e.getMessage());
+            Result result = Result.failure(HttpStatus.UNAUTHORIZED.value(), "无效Token", token);
+            return write2response(exchange, result);
         }
-    }
-
-    @Override
-    public int getOrder() {
-        return 0;
     }
 
     /**
