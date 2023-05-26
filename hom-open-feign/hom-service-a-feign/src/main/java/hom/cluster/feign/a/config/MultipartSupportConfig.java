@@ -1,4 +1,4 @@
-package hom.cluster.service.a.feign.config;
+package hom.cluster.feign.a.config;
 
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;

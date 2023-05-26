@@ -1,7 +1,7 @@
 package hom.cluster.service.b.controller;
 
 import hom.cluster.common.base.res.Result;
-import hom.cluster.service.a.feign.client.TestFeignClient;
+import hom.cluster.feign.a.client.TestFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

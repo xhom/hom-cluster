@@ -1,4 +1,4 @@
-package hom.cluster.service.a.feign.client;
+package hom.cluster.feign.a.client;
 
 import hom.cluster.common.base.res.Result;
 import org.springframework.cloud.openfeign.FeignClient;
