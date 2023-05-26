@@ -12,7 +12,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BaseErrorCode implements ErrorCode {
     FAILURE(0, "操作失败"),
-    SUCCESS(1, "操作成功");
+    SUCCESS(1, "操作成功"),
+    UNAUTHORIZED(401, "无访问权限");
 
     private final Integer code;
     private final String msg;

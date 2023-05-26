@@ -54,6 +54,10 @@
         </dependency>
         <dependency>
             <groupId>hom.cluster</groupId>
+            <artifactId>hom-common-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hom.cluster</groupId>
             <artifactId>hom-common-dao</artifactId>
         </dependency>
     </dependencies>

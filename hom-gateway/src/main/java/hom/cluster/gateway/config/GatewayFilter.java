@@ -2,7 +2,9 @@ package hom.cluster.gateway.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import hom.cluster.gateway.common.Result;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import hom.cluster.common.base.code.BaseErrorCode;
+import hom.cluster.common.base.res.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +63,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         //2 检查token是否存在
         String token = getToken(exchange);
         if (StringUtils.isBlank(token)) {
-            Result result = Result.failure(HttpStatus.UNAUTHORIZED.value(), "Token缺失");
-            return write2response(exchange, result);
+            return unauthorized(exchange, "Token缺失");
         }
 
         //3 判断是否是有效的token
@@ -87,12 +88,10 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             return chain.filter(build);
         } catch (InvalidTokenException e) {
             log.info("无效的token: {}, error: {}", token, e.getMessage());
-            Result result = Result.failure(HttpStatus.UNAUTHORIZED.value(), "无效Token", token);
-            return write2response(exchange, result);
+            return unauthorized(exchange, "无效Token", token);
         }catch (Exception e){
             log.info("token解析失败: {}, error: {}", token, e.getMessage());
-            Result result = Result.failure(HttpStatus.UNAUTHORIZED.value(), "无效Token", token);
-            return write2response(exchange, result);
+            return unauthorized(exchange, "Token无法识别", token);
         }
     }
 
@@ -116,9 +115,17 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         return null;
     }
 
+    private Mono<Void> unauthorized(ServerWebExchange exchange, String message){
+        return unauthorized(exchange, message, null);
+    }
+
+    private Mono<Void> unauthorized(ServerWebExchange exchange, String message, Object data){
+        return write2response(exchange, Result.failure(BaseErrorCode.UNAUTHORIZED.code(), message, data));
+    }
+
     private Mono<Void> write2response(ServerWebExchange exchange, Result result){
         ServerHttpResponse response = exchange.getResponse();
-        byte[] body = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
+        byte[] body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue).getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(body);
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         //指定编码，否则在浏览器中会中文乱码
