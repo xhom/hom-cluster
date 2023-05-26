@@ -24,6 +24,9 @@ public class Result {
     public static Result success(Object data){
         return success(BaseErrorCode.SUCCESS, data);
     }
+    public static Result success(String message, Object data){
+        return new Result(true, BaseErrorCode.SUCCESS.code(), message, data);
+    }
     public static Result success(ErrorCode errorCode, Object data){
         return new Result(true, errorCode.code(), errorCode.msg(), data);
     }
