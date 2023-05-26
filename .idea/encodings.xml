@@ -13,12 +13,12 @@
     <file url="file://$PROJECT_DIR$/hom-common/hom-common-model/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-common/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/hom-discovery/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/hom-discovery/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-open-feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-open-feign/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-service-a/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-service-a/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

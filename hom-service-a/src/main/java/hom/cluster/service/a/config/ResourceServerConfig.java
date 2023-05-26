@@ -1,4 +1,4 @@
-package hom.cluster.discovery.config;
+package hom.cluster.service.a.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

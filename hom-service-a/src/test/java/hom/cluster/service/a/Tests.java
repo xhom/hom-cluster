@@ -1,4 +1,4 @@
-package hom.cluster.discovery;
+package hom.cluster.service.a;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

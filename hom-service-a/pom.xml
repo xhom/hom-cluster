@@ -9,11 +9,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hom-discovery</artifactId>
+    <artifactId>hom-service-a</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>hom-discovery</name>
-    <description>服务注册与发现</description>
+    <name>hom-service-a</name>
+    <description>A服务</description>
 
     <dependencies>
         <dependency>

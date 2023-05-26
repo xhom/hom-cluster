@@ -1,4 +1,4 @@
-package hom.cluster.discovery.config;
+package hom.cluster.service.a.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

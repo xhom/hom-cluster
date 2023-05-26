@@ -1,4 +1,4 @@
-package hom.cluster.discovery.controller;
+package hom.cluster.service.a.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
