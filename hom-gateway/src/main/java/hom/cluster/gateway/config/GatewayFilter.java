@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.core.annotation.Order;
+import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,15 +28,26 @@ import java.util.Map;
 
 /**
  * @author visy.wang
- * @description:
+ * @description: 全局过滤器
  * @date 2023/5/24 15:10
  */
 @Slf4j
-@Order(0)//数字越小优先级越高，默认按照声明顺序从1开始递增
 @Component
-public class GatewayFilter implements GlobalFilter {
+public class GatewayFilter implements GlobalFilter, Ordered {
     @Autowired
     private TokenStore tokenStore;
+
+    @Override
+    public int getOrder() {
+        /*
+         * 指定过滤器的优先级，数字越小优先级越高，默认按照声明顺序从1开始递增
+         * 注意：
+         * 一般情况下,这两种写法效果相同,但是在gateway中两者差别甚大
+         * 如果使用@Order(-199)写法,会先执行gatewayFilter(虽然默认的order是10000),然后才执行GlobalFilter
+         * 如果使用Ordered接口写法,会按照order值从小到大执行
+         */
+        return 0;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
