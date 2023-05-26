@@ -30,3 +30,9 @@ spring:
             - Path=/a/**
           filters:
             - StripPrefix=1
+        - id: hom-service-b
+          uri: lb://hom-service-b
+          predicates:
+            - Path=/b/**
+          filters:
+            - StripPrefix=1
