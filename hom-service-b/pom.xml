@@ -33,5 +33,9 @@
             <groupId>hom.cluster</groupId>
             <artifactId>hom-common-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>hom.cluster</groupId>
+            <artifactId>hom-service-a-feign</artifactId>
+        </dependency>
     </dependencies>
 </project>

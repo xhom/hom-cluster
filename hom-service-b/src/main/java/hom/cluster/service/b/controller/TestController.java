@@ -1,6 +1,8 @@
 package hom.cluster.service.b.controller;
 
 import hom.cluster.common.base.res.Result;
+import hom.cluster.service.a.feign.client.TestFeignClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,9 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+    @Autowired
+    private TestFeignClient testFeignClient;
 
-    @RequestMapping("/hello")
+
+    /*
+     * 注意：项目内的接口不可以和Feign中的的路径冲突
+     */
+    @RequestMapping("/hello2")
     public Result hello(){
-        return Result.success("Hello, Im Service B.");
+        Result feignData = testFeignClient.hello();
+        return Result.success("Hello, Im Service B.", feignData);
     }
 }

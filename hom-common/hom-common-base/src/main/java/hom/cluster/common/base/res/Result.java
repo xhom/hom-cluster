@@ -4,6 +4,7 @@ import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.code.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author visy.wang
@@ -11,6 +12,7 @@ import lombok.Data;
  * @date 2023/5/24 15:17
  */
 @Data
+@NoArgsConstructor //一定要写，序列化的时候需要
 @AllArgsConstructor
 public class Result {
     private Boolean success;
