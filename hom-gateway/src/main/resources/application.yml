@@ -7,17 +7,17 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8000
-        #group: HOM_GATEWAY_GROUP
-        #namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+        group: HOM_GATEWAY_GROUP
+        namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
     loadbalancer:
       ribbon:
         enabled: false
     gateway:
       routes:
-        - id: hom-discovery
+        - id: hom-service-a
           #固定地址写法： uri: http://127.0.0.1:8002
-          uri: lb://hom-discovery
+          uri: lb://hom-service-a
           predicates:
-            - Path=/discovery/**
+            - Path=/a/**
           filters:
             - StripPrefix=1
