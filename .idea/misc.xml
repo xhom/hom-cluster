@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/hom-auth/pom.xml" />
         <option value="$PROJECT_DIR$/hom-common-model/pom.xml" />
         <option value="$PROJECT_DIR$/hom-common-base/pom.xml" />
+        <option value="$PROJECT_DIR$/hom-common/hom-common-base/pom.xml" />
       </list>
     </option>
   </component>

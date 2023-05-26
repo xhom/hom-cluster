@@ -5,13 +5,13 @@
 
     <parent>
         <groupId>hom.cluster</groupId>
-        <artifactId>hom-cluster</artifactId>
+        <artifactId>hom-common</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hom-common-model</artifactId>
+    <artifactId>hom-common-base</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>hom-common-model</name>
-    <description>通用的Java对象模型层</description>
+    <name>hom-common-base</name>
+    <description>基础通用层</description>
 </project>
