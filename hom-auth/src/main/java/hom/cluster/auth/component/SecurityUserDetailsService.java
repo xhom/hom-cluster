@@ -38,8 +38,9 @@ public class SecurityUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LocalUser localUser = userService.getUserByUsername(username);
         if (Objects.isNull(localUser)) {
-            return null;
+            throw new UsernameNotFoundException("user not exists");
         }
+
         //获取权限
         List<Permission> permissions = permissionService.listPermissionsByUserId(localUser.getId());
         String[] authorities = {};
@@ -48,6 +49,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
             authorities = new String[codes.size()];
             codes.toArray(authorities);
         }
+
         //身份令牌
         JSONObject principal = new JSONObject();
         principal.put("userid", localUser.getId());
