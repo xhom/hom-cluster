@@ -21,19 +21,14 @@ import java.util.Collections;
 
 /**
  * @author visy.wang
- * @description: 访问令牌配置
+ * @description: 令牌存储配置
  * @date 2023/5/23 22:54
  */
 @Configuration
 public class TokenConfig {
     @Autowired
     private DataSource dataSource;
-
-    /**
-     * 秘钥串
-     */
-    private static final String SIGNING_KEY = "uaa";
-
+    private static final String JWT_SIGNING_KEY = "hom.cluster.jwt.sign.key";
 
     @Bean
     public TokenStore tokenStore() {
@@ -49,12 +44,21 @@ public class TokenConfig {
         return new JdbcTokenStore(dataSource);
     }
 
-    /*@Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        /*
+         *   JWT校验规则:
+         *   1、设置jwt和signingkey(自定义，加密解密保持一致即可)
+         *   2、按"."对jwt分成三部分，即: header、payload、sign
+         *   3、取第一部分进行base64解码，获取加密方式
+         *   4、取第二部分进行base64解码，获取业务参数，即payload
+         *   5、使用加密方式和signingkey创建校验器，对header+payload进行加密，并与sign (即第=部分) 进行对比
+         *   6、取出payload的有效期进行校验，是否过期通过校验，返回claims信息
+         */
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(SIGNING_KEY);
+        converter.setSigningKey(JWT_SIGNING_KEY);
         return converter;
-    }*/
+    }
 
     /**
      * 配置令牌管理

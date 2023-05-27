@@ -20,7 +20,7 @@ public class TokenConfig {
 
     @Bean
     public TokenStore tokenStore() {
-        //将Token保存枣数据库
+        //将Token保存到数据库
         return new JdbcTokenStore(dataSource);
     }
 }

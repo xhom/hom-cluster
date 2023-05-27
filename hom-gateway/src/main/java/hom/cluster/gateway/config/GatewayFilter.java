@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author visy.wang
@@ -67,15 +68,28 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         }
 
         //3 判断是否是有效的token
-        OAuth2AccessToken oAuth2AccessToken;
+        OAuth2AccessToken accessToken;
         try {
-            oAuth2AccessToken = tokenStore.readAccessToken(token);
+            accessToken = tokenStore.readAccessToken(token);
+            if(Objects.isNull(accessToken)){
+                log.info("Token不存在：{}", token);
+                return unauthorized(exchange, "无效Token", token);
+            }
 
-            Map<String, Object> additionalInformation = oAuth2AccessToken.getAdditionalInformation();
+            if(accessToken.isExpired()){
+                log.info("Token已过期：{}", token);
+                return unauthorized(exchange, "Token已过期", token);
+            }
+
+            Map<String, Object> additionalInfo = accessToken.getAdditionalInformation();
+
+            System.out.println("oAuth2AccessToken: "+ JSON.toJSONString(accessToken));
+            System.out.println("additionalInfo: "+ JSON.toJSONString(additionalInfo));
+
             //取出用户身份信息
-            Object principal = additionalInformation.get("user_name");
+            Object principal = additionalInfo.get("user_name");
             //获取用户权限
-            Object authorities = additionalInformation.get("authorities");
+            Object authorities = additionalInfo.get("authorities");
 
             JSONObject jsonToken = new JSONObject();
             jsonToken.put("principal", principal);
@@ -87,10 +101,10 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             ServerWebExchange build = exchange.mutate().request(tokenRequest).build();
             return chain.filter(build);
         } catch (InvalidTokenException e) {
-            log.info("无效的token: {}, error: {}", token, e.getMessage());
+            log.info("Token无效: {}, error: {}", token, e.getMessage());
             return unauthorized(exchange, "无效Token", token);
         }catch (Exception e){
-            log.info("token解析失败: {}, error: {}", token, e.getMessage());
+            log.info("Token解析异常: {}, error: {}", token, e.getMessage(), e);
             return unauthorized(exchange, "Token无法识别", token);
         }
     }
