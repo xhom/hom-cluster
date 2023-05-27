@@ -16,14 +16,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -32,9 +28,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,6 +40,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class GatewayFilter implements GlobalFilter, Ordered {
+    private static final String JSON_TOKEN_HEADER = "X-Json-Token";
     private static final String ACCESS_TOKEN_HEADER = "X-Access-Token";
 
     @Autowired
@@ -80,9 +75,8 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         }
 
         //3 判断是否是有效的token
-        OAuth2AccessToken accessToken;
         try {
-            accessToken = tokenStore.readAccessToken(token);
+            OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
             if(Objects.isNull(accessToken)){
                 log.info("Token不存在：{}", token);
                 return unauthorized(exchange, "无效Token", token);
@@ -111,7 +105,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             String JSONTokenBase64 = Base64Utils.encodeToString(JSONToken.getBytes(StandardCharsets.UTF_8));
 
             //添加到Header，路由到下游服务
-            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header("JsonToken", JSONTokenBase64).build();
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header(JSON_TOKEN_HEADER, JSONTokenBase64).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
             return chain.filter(mutateExchange);
         } catch (InvalidTokenException e) {
@@ -136,8 +130,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         byte[] body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue).getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(body);
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        //指定编码，否则在浏览器中会中文乱码
-        response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
         return response.writeWith(Mono.just(buffer));
     }
 }

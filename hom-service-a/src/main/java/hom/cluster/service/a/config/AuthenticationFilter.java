@@ -2,8 +2,13 @@ package hom.cluster.service.a.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import hom.cluster.common.base.code.BaseErrorCode;
+import hom.cluster.common.base.res.Result;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +27,8 @@ import java.nio.charset.StandardCharsets;
  */
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
+    private static final String JSON_TOKEN_HEADER = "X-Json-Token";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -32,11 +39,19 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = request.getHeader("JsonToken");
-        if (StringUtils.isNotBlank(token)){
-            String jsonTokenStr = Base64Utils.encodeToString(token.getBytes(StandardCharsets.UTF_8));
-            //JSONObject jsonToken = JSON.parseObject(jsonTokenStr);
-            System.out.println("jsonToken: "+ jsonTokenStr);
+        String JSONTokenBase64 = request.getHeader(JSON_TOKEN_HEADER);
+        if (StringUtils.isBlank(JSONTokenBase64)){
+            Result result = Result.failure(BaseErrorCode.UNAUTHORIZED);
+            String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+            response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
+            return;
+        }else{
+            String JSONToken = new String(Base64Utils.decodeFromString(JSONTokenBase64), StandardCharsets.UTF_8);
+            System.out.println("jsonToken: "+ JSONToken);
+            JSONObject userInformation = JSON.parseObject(JSONToken);
+            request.setAttribute("user", userInformation);
         }
 
         filterChain.doFilter(request, response);
