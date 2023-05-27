@@ -1,5 +1,6 @@
 package hom.cluster.auth.config;
 
+import hom.cluster.auth.component.AuthExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -46,6 +47,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthExceptionTranslator authExceptionTranslator;
 
     /*@Autowired
     @Qualifier("myClientDetailsService")
@@ -101,9 +104,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
-                .allowedTokenEndpointRequestMethods(HttpMethod.POST);//Token获取的请求方式
-               /* .authorizationCodeServices(authorizationCodeServices)
-                .tokenServices(tokenService)
+                .exceptionTranslator(authExceptionTranslator) //自定义异常处理
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST); //Token获取的请求方式
+               /*.authorizationCodeServices(authorizationCodeServices)
                 .exceptionTranslator(new DefaultWebResponseExceptionTranslator());*/
     }
 }
