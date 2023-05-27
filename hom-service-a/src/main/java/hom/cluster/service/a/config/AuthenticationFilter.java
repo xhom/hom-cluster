@@ -1,7 +1,6 @@
 package hom.cluster.service.a.config;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.res.Result;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -48,10 +46,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
             return;
         }else{
-            String JSONToken = new String(Base64Utils.decodeFromString(JSONTokenBase64), StandardCharsets.UTF_8);
-            System.out.println("jsonToken: "+ JSONToken);
-            JSONObject userInformation = JSON.parseObject(JSONToken);
-            request.setAttribute("user", userInformation);
+            //交由LoginUserArgumentResolver解析并注入接口
         }
 
         filterChain.doFilter(request, response);

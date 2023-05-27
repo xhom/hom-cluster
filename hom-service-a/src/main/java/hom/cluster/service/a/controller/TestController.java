@@ -2,6 +2,8 @@ package hom.cluster.service.a.controller;
 
 import com.alibaba.fastjson.JSON;
 import hom.cluster.common.base.res.Result;
+import hom.cluster.service.a.config.LoginUserArgumentResolver;
+import hom.cluster.service.a.model.LoginUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +22,8 @@ public class TestController {
     private String testValue;
 
     @RequestMapping("/hello")
-    public Result hello(HttpServletRequest request){
-        System.out.println("user: "+ JSON.toJSONString(request.getAttribute("user")));
+    public Result hello(LoginUser loginUser){
+        System.out.println("loginUser: "+ JSON.toJSONString(loginUser));
         return Result.success("Hello, Im Service A, And test's value is: "+ testValue);
     }
 }
