@@ -17,9 +17,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -28,8 +32,11 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author visy.wang
@@ -86,24 +93,27 @@ public class GatewayFilter implements GlobalFilter, Ordered {
                 return unauthorized(exchange, "Token已过期", token);
             }
 
-            Map<String, Object> additionalInfo = accessToken.getAdditionalInformation();
-            System.out.println("oAuth2AccessToken: "+ JSON.toJSONString(accessToken));
-            System.out.println("additionalInfo: "+ JSON.toJSONString(additionalInfo));
+            OAuth2Authentication authentication = tokenStore.readAuthentication(token);
+            if(Objects.isNull(authentication)){
+                log.info("Token无法获取用户信息：{}", token);
+                return unauthorized(exchange, "无效Token", token);
+            }
 
-            //取出用户身份信息
-            Object principal = additionalInfo.get("user_name");
-            //获取用户权限
-            Object authorities = additionalInfo.get("authorities");
+            //获取当前登录用户信息
+            String userInfo = authentication.getName();
+            Collection<GrantedAuthority> authorities = authentication.getAuthorities();
 
-            JSONObject jsonToken = new JSONObject();
-            jsonToken.put("principal", principal);
-            jsonToken.put("authorities", authorities);
+            //组装用户JSON信息，并Base64编码
+            JSONObject userInformation = new JSONObject();
+            userInformation.putAll(JSON.parseObject(userInfo));
+            userInformation.put("authorities", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+            String JSONToken = JSON.toJSONString(userInformation, SerializerFeature.WriteMapNullValue);
+            String JSONTokenBase64 = Base64Utils.encodeToString(JSONToken.getBytes(StandardCharsets.UTF_8));
 
-            //给header里面添加值
-            String jsonTokenBase64 = Base64Utils.encodeToString(jsonToken.toJSONString().getBytes(StandardCharsets.UTF_8));
-            ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header("JsonToken", jsonTokenBase64).build();
-            ServerWebExchange build = exchange.mutate().request(tokenRequest).build();
-            return chain.filter(build);
+            //添加到Header，路由到下游服务
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header("JsonToken", JSONTokenBase64).build();
+            ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
+            return chain.filter(mutateExchange);
         } catch (InvalidTokenException e) {
             log.info("Token无效: {}, error: {}", token, e.getMessage());
             return unauthorized(exchange, "无效Token", token);

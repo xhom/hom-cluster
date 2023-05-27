@@ -1,6 +1,8 @@
 package hom.cluster.auth.component;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.nacos.common.utils.CollectionUtils;
 import hom.cluster.auth.model.Permission;
 import hom.cluster.auth.service.PermissionService;
@@ -47,9 +49,18 @@ public class SecurityUserDetailsService implements UserDetailsService {
             codes.toArray(authorities);
         }
         //身份令牌
-        String principal = JSON.toJSONString(localUser);
-        System.out.println("principal:" + principal);
+        JSONObject principal = new JSONObject();
+        principal.put("userid", localUser.getId());
+        principal.put("username", localUser.getUsername());
         String password = passwordEncoder.encode(localUser.getPassword());
-        return User.withUsername(username).password(password).authorities(authorities).build();
+        String principalJson = JSON.toJSONString(principal, SerializerFeature.WriteMapNullValue);
+        System.out.println("principal:" + principalJson);
+        return User.withUsername(principalJson)
+                .password(password)
+                .authorities(authorities)
+                //.accountExpired(true)//账号过期
+                //.accountLocked(true)//账号锁定
+                //.credentialsExpired(true)//证书过期
+                .build();
     }
 }
