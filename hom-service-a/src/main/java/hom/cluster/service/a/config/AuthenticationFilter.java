@@ -47,8 +47,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }else{
             //交由LoginUserArgumentResolver解析并注入接口
+            filterChain.doFilter(request, response);
         }
-
-        filterChain.doFilter(request, response);
     }
 }
