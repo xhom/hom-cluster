@@ -24,6 +24,7 @@ import java.util.Objects;
 @Component
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
     private static final String JSON_TOKEN_HEADER = "X-Json-Token";
+
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return LoginUser.class.equals(methodParameter.getParameterType());
@@ -34,6 +35,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
+
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         if(Objects.isNull(request)){
             return null;
@@ -47,9 +49,9 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         String JSONToken = new String(Base64Utils.decodeFromString(JSONTokenBase64), StandardCharsets.UTF_8);
         JSONObject data = JSON.parseObject(JSONToken);
         LoginUser loginUser = new LoginUser();
-        //可添加更多字段
         loginUser.setId(data.getLong("userid"));
         loginUser.setUsername(data.getString("username"));
+        //可添加更多字段...
         return loginUser;
     }
 }

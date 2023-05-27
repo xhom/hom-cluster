@@ -31,6 +31,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         if(HttpMethod.OPTIONS.matches(request.getMethod().toUpperCase())){
             //过滤OPTIONS请求
             filterChain.doFilter(request, response);

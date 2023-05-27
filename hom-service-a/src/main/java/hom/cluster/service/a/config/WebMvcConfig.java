@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-@Autowired
+    @Autowired
     private LoginUserArgumentResolver loginUserArgumentResolver;
 
     @Override
