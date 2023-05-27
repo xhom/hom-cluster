@@ -9,9 +9,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hom-service-a-feign</artifactId>
+    <artifactId>hom-feign-a</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>hom-service-a-feign</name>
-    <description>hom-service-a feign接口</description>
+    <name>hom-feign-a</name>
+    <description>A服务的Feign接口</description>
 </project>

@@ -15,7 +15,7 @@
     <description>Feign模块Parent</description>
 
     <modules>
-        <module>hom-service-a-feign</module>
+        <module>hom-feign-a</module>
     </modules>
 
     <dependencies>
