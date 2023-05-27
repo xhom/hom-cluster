@@ -34,7 +34,7 @@ public class AuthExceptionTranslator implements WebResponseExceptionTranslator {
         //认证异常
         OAuth2Exception oa2e = getException(causeChain, OAuth2Exception.class);
         if(Objects.nonNull(oa2e)){
-            return ex2response(oa2e, oa2e.getHttpErrorCode(), "用户名或密码错误");
+            return ex2response(oa2e, oa2e.getHttpErrorCode(), "登录失败");
         }
 
         //身份验证相关异常
