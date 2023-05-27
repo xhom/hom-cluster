@@ -16,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -37,6 +39,8 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class GatewayFilter implements GlobalFilter, Ordered {
+    private static final String ACCESS_TOKEN_HEADER = "X-Access-Token";
+
     @Autowired
     private TokenStore tokenStore;
 
@@ -62,7 +66,8 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         }
 
         //2 检查token是否存在
-        String token = getToken(exchange);
+        HttpHeaders headers = exchange.getRequest().getHeaders();
+        String token = headers.getFirst(ACCESS_TOKEN_HEADER);
         if (StringUtils.isBlank(token)) {
             return unauthorized(exchange, "Token缺失");
         }
@@ -82,7 +87,6 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             }
 
             Map<String, Object> additionalInfo = accessToken.getAdditionalInformation();
-
             System.out.println("oAuth2AccessToken: "+ JSON.toJSONString(accessToken));
             System.out.println("additionalInfo: "+ JSON.toJSONString(additionalInfo));
 
@@ -107,26 +111,6 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             log.info("Token解析异常: {}, error: {}", token, e.getMessage(), e);
             return unauthorized(exchange, "Token无法识别", token);
         }
-    }
-
-    /**
-     * 获取Token
-     */
-    private String getToken(ServerWebExchange exchange) {
-        HttpHeaders headers = exchange.getRequest().getHeaders();
-        String token = headers.getFirst("Authorization");
-        if (StringUtils.isNotBlank(token)) {
-            String[] tokenArray = token.split(" ");
-            if (tokenArray.length > 1) {
-                token = tokenArray[1];
-            }else{
-                token = tokenArray[0];
-            }
-            if(StringUtils.isNotBlank(token)){
-                return token;
-            }
-        }
-        return null;
     }
 
     private Mono<Void> unauthorized(ServerWebExchange exchange, String message){

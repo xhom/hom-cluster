@@ -2,6 +2,7 @@ package hom.cluster.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -75,7 +76,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                 .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .scopes(SCOPES)
-                .authorizedGrantTypes(GRANT_TYPE_PASSWORD);
+                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, GRANT_TYPE_REFRESH_TOKEN);
     }
 
     /**
@@ -99,10 +100,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
                 .tokenStore(tokenStore)
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager)
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST);//Token获取的请求方式
                /* .authorizationCodeServices(authorizationCodeServices)
                 .tokenServices(tokenService)
-                .allowedTokenEndpointRequestMethods(HttpMethod.POST)
                 .exceptionTranslator(new DefaultWebResponseExceptionTranslator());*/
     }
 }
