@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author visy.wang
- * @description: 配置自定义解析器
+ * @description: 配置自定义参数解析器
  * @date 2023/5/27 14:15
  */
 @Configuration

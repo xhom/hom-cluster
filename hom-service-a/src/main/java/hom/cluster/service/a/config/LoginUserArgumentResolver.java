@@ -2,14 +2,9 @@ package hom.cluster.service.a.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import hom.cluster.common.base.code.BaseErrorCode;
-import hom.cluster.common.base.res.Result;
 import hom.cluster.service.a.model.LoginUser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -39,7 +34,6 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
-
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
         if(Objects.isNull(request)){
             return null;

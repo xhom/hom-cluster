@@ -37,14 +37,16 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        //这个Token由网关鉴权通过后写入Header
         String JSONTokenBase64 = request.getHeader(JSON_TOKEN_HEADER);
         if (StringUtils.isBlank(JSONTokenBase64)){
+            //理论上不会为空
+            //除了一些不需要登录认证的接口，但需在网关中配置
             Result result = Result.failure(BaseErrorCode.UNAUTHORIZED);
             String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
             response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
-            return;
         }else{
             //交由LoginUserArgumentResolver解析并注入接口
             filterChain.doFilter(request, response);
