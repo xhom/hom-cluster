@@ -3,6 +3,7 @@ package hom.cluster.auth.component;
 import hom.cluster.auth.common.OAuth2Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -62,7 +63,7 @@ public class AuthExceptionTranslator implements WebResponseExceptionTranslator {
     private ResponseEntity<?> ex2response(Exception e, Integer status, String message) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Pragma", "no-cache");
-        headers.set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
         OAuth2Result oAuth2Result = OAuth2Result.failure(status, message, e.getMessage());
         return new ResponseEntity<>(oAuth2Result, headers, HttpStatus.valueOf(status));
     }

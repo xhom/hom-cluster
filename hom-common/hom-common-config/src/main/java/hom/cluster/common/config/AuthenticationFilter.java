@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -125,7 +126,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         Result result = Result.failure(status.value(), message);
         String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
         response.setStatus(status.value());
-        response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+        response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
     }
 }
