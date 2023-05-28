@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>hom.cluster</groupId>
-            <artifactId>hom-common-base</artifactId>
+            <artifactId>hom-common-config</artifactId>
         </dependency>
         <dependency>
             <groupId>hom.cluster</groupId>
