@@ -1,6 +1,7 @@
 package hom.cluster.service.a.controller;
 
 import com.alibaba.fastjson.JSON;
+import hom.cluster.common.base.anno.NonAuth;
 import hom.cluster.common.base.res.Result;
 import hom.cluster.service.a.model.LoginUser;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @description: 测试接口
  * @date 2023/5/23 11:52
  */
+@NonAuth(isInner = true)
 @RestController
 @RequestMapping("/test")
 public class TestController {

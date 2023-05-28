@@ -47,7 +47,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try{
             HandlerExecutionChain handlerChain = requestMappingHandlerMapping.getHandler(request);
             if(Objects.isNull(handlerChain)){
-                unauthorized(response);
+                unauthorized(response, "handlerChain is null");
                 return;
             }
 
@@ -72,7 +72,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(feignSecretKey)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response);
+                        unauthorized(response, "Feign连接密匙错误");
                     }
                 }else{
                     //外部调用（通过gateway）
@@ -81,7 +81,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(gatewaySecretKey)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response);
+                        unauthorized(response, "Gateway连接密匙错误");
                     }
                 }
             }else{//需登录
@@ -90,7 +90,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 if (StringUtils.isBlank(JSONTokenBase64)){
                     //理论上不会为空
                     //除了一些不需要登录认证的接口，但需在网关中配置
-                    unauthorized(response);
+                    unauthorized(response, "用户未登录");
                 }else{
                     //交由LoginUserArgumentResolver解析并注入接口
                     filterChain.doFilter(request, response);
@@ -98,12 +98,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             }
         }catch (Exception e){
             e.printStackTrace();
-            unauthorized(response);
+            unauthorized(response, e.getMessage());
         }
     }
 
-    private void unauthorized(HttpServletResponse response) throws IOException{
-        Result result = Result.failure(BaseErrorCode.UNAUTHORIZED);
+    private void unauthorized(HttpServletResponse response, String message) throws IOException{
+        Result result = Result.failure(BaseErrorCode.UNAUTHORIZED.getCode(), message);
         String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
