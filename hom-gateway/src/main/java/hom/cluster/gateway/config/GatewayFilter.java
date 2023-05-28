@@ -72,6 +72,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
+        //2 白名单放行
         List<String> urlWhiteList = homGatewayConfig.getUrlWhiteList();
         if(!CollectionUtils.isEmpty(urlWhiteList) && urlWhiteList.contains(requestUrl)){
             log.info("白名单Url: {}", requestUrl);
@@ -82,14 +83,14 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             return chain.filter(mutateExchange);
         }
 
-        //2 检查token是否存在
+        //3 检查token是否存在
         HttpHeaders headers = exchange.getRequest().getHeaders();
         String token = headers.getFirst(HttpHeaderConst.ACCESS_TOKEN);
         if (StringUtils.isBlank(token)) {
             return unauthorized(exchange, "Token缺失");
         }
 
-        //3 判断是否是有效的token
+        //4 判断是否是有效的token
         try {
             OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
             if(Objects.isNull(accessToken)){
@@ -120,7 +121,9 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             String JSONTokenBase64 = Base64Utils.encodeToString(JSONToken.getBytes(StandardCharsets.UTF_8));
 
             //添加到Header，路由到下游服务
-            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header(HttpHeaderConst.JSON_TOKEN, JSONTokenBase64).build();
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
+                    .header(HttpHeaderConst.JSON_TOKEN, JSONTokenBase64)
+                    .header(HttpHeaderConst.GATEWAY_SECRET_KET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
             return chain.filter(mutateExchange);
         } catch (InvalidTokenException e) {

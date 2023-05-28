@@ -66,10 +66,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 nonAuth = methodHandler.getMethod().getAnnotation(NonAuth.class);
             }
 
+            String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
+
             if(Objects.nonNull(nonAuth)){//无需登录
                 String FSK = request.getHeader(HttpHeaderConst.FEIGN_SECRET_KET);
-                String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
-
                 if(NonAuthPolicy.INNER.equals(nonAuth.value())){
                     //内部调用，比如Feign
                     //需要校验FeignSecretKey(自定义的连接密码)
@@ -97,7 +97,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             }else{//需登录
                 //这个Token由网关鉴权通过后写入Header
                 String JSONToken = request.getHeader(HttpHeaderConst.JSON_TOKEN);
-                if (StringUtils.isBlank(JSONToken)){
+                if(!SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
+                    write(response, HttpStatus.FORBIDDEN, "拒绝连接");
+                }else if (StringUtils.isBlank(JSONToken)){
                     write(response, HttpStatus.UNAUTHORIZED, "用户未登录");
                 }else{
                     //交由LoginUserArgumentResolver解析并注入接口
