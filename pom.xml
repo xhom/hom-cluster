@@ -104,6 +104,11 @@
             </dependency>
             <dependency>
                 <groupId>hom.cluster</groupId>
+                <artifactId>hom-common-config</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>hom.cluster</groupId>
                 <artifactId>hom-feign-a</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
