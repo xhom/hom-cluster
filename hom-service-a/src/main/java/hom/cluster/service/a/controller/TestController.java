@@ -21,7 +21,7 @@ public class TestController {
 
     //* 这个注解标记的接口将不会验证用户登录，接收到的登录用户是null
     //1.接口提供给内部服务使用时：@NonAuth(isInner = true)
-    //2.接口暴露给外部（经网关转发）使用时：@NonAuth 或 @NonAuth(isInner = false)
+    //2.接口暴露给外部（经网关转发）使用时：@NonAuth 或 @NonAuth(isInner = false)，但要在网关配置接口白名单
     //3.这个注解也可以添加到Controller上，将对其中的所有接口生效，且优先级高于添加到方法上
     @NonAuth(isInner = true)
     @RequestMapping("/hello")
