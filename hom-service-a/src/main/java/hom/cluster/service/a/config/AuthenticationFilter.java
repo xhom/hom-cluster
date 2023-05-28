@@ -6,6 +6,7 @@ import hom.cluster.common.base.anno.NonAuth;
 import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.common.base.constants.SecretKeyConst;
+import hom.cluster.common.base.enums.NonAuthType;
 import hom.cluster.common.base.res.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -67,20 +68,28 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             }
 
             if(Objects.nonNull(nonAuth)){//无需登录
-                if(nonAuth.isInner()){
+                String FSK = request.getHeader(HttpHeaderConst.FEIGN_SECRET_KET);
+                String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
+
+                if(NonAuthType.INNER.equals(nonAuth.type())){
                     //内部调用，比如Feign
                     //需要校验FeignSecretKey(自定义的连接密码)
-                    String feignSecretKey = request.getHeader(HttpHeaderConst.FEIGN_SECRET_KET);
-                    if(SecretKeyConst.FEIGN_SECRET_KEY.equals(feignSecretKey)){
+                    if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK)){
                         filterChain.doFilter(request, response);
                     }else{
                         unauthorized(response, "拒绝连接");
                     }
-                }else{
+                }else if(NonAuthType.OUTER.equals(nonAuth.type())){
                     //外部调用（通过gateway）
                     //需要校验GatewaySecretKey(自定义的连接密码)
-                    String gatewaySecretKey = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
-                    if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(gatewaySecretKey)){
+                    if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
+                        filterChain.doFilter(request, response);
+                    }else{
+                        unauthorized(response, "拒绝连接");
+                    }
+                }else{ //NonAuth.NonAuthType.ALL
+                    if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK) || SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
+                        //满足其中一个Key即可
                         filterChain.doFilter(request, response);
                     }else{
                         unauthorized(response, "拒绝连接");

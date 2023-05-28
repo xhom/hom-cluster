@@ -21,9 +21,9 @@ public class TestController {
     /*
      * 注意：项目内的接口不可以和Feign中的的路径冲突
      */
-    @RequestMapping("/hello2")
+    @RequestMapping("/hello")
     public Result hello(){
-        Result feignData = testFeignClient.hello();
+        Result feignData = testFeignClient.inner();
         return Result.success("Hello, Im Service B.", feignData);
     }
 }

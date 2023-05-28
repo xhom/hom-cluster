@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(value = "hom-service-a", configuration = MultipartSupportConfig.class)
 @RequestMapping("/test")
 public interface TestFeignClient {
-    @RequestMapping("/hello")
-    Result hello();
+    @RequestMapping("/inner")
+    Result inner();
 }

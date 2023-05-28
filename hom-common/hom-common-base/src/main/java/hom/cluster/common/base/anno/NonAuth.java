@@ -1,5 +1,7 @@
 package hom.cluster.common.base.anno;
 
+import hom.cluster.common.base.enums.NonAuthType;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,8 +14,8 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface NonAuth {
     /**
-     * 是否内部调用，比如Feign
-     * 默认false,即为外部调用（通过gateway）
+     * 开放权限类型，默认开放给内部服务
      */
-    boolean isInner() default false;
+    NonAuthType type() default NonAuthType.INNER;
+
 }
