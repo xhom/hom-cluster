@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * @author visy.wang
- * @description: 标记无需鉴权的接口
+ * @description: 接口权限开放注解
  * @date 2023/5/28 10:51
  */
 @Documented

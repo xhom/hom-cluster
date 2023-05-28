@@ -2,7 +2,7 @@ package hom.cluster.common.base.enums;
 
 /**
  * @author visy.wang
- * @description: 权限开发类型枚举
+ * @description: 权限开放类型枚举
  * @date 2023/5/28 14:00
  */
 public enum NonAuthPolicy {
