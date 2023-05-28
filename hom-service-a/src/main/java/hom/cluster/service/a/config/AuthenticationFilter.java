@@ -49,6 +49,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try{
             HandlerExecutionChain handlerChain = requestMappingHandlerMapping.getHandler(request);
             if(Objects.isNull(handlerChain)){
+                log.info("[权限过滤器]handlerChain为null");
                 write(response, HttpStatus.INTERNAL_SERVER_ERROR, "服务异常");
                 return;
             }
@@ -66,40 +67,48 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 nonAuth = methodHandler.getMethod().getAnnotation(NonAuth.class);
             }
 
-            String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
+            String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET);
 
             if(Objects.nonNull(nonAuth)){//无需登录
-                String FSK = request.getHeader(HttpHeaderConst.FEIGN_SECRET_KET);
+                String FSK = request.getHeader(HttpHeaderConst.FEIGN_SECRET);
                 if(NonAuthPolicy.INNER.equals(nonAuth.value())){
                     //内部调用，比如Feign
-                    //需要校验FeignSecretKey(自定义的连接密码)
+                    //需要校验FeignSecretKey
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK)){
                         filterChain.doFilter(request, response);
                     }else{
-                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
+                        log.info("[权限过滤器]FEIGN_SECRET_KEY错误");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝访问");
                     }
                 }else if(NonAuthPolicy.OUTER.equals(nonAuth.value())){
                     //外部调用（通过gateway）
-                    //需要校验GatewaySecretKey(自定义的连接密码)
+                    //需要校验GatewaySecretKey
                     if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
                         filterChain.doFilter(request, response);
                     }else{
-                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
+                        log.info("[权限过滤器]GATEWAY_SECRET_KEY错误（无需登录）");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝访问");
                     }
-                }else{ //NonAuth.NonAuthType.ALL
+                }else if(NonAuthPolicy.ALL.equals(nonAuth.value())){
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK) || SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
                         //满足其中一个Key即可
                         filterChain.doFilter(request, response);
                     }else{
-                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
+                        log.info("[权限过滤器]FEIGN_SECRET_KEY或GATEWAY_SECRET_KEY（无需登录）错误");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝访问");
                     }
+                }else{
+                    log.info("[权限过滤器]无法识别NonAuthPolicy");
+                    write(response, HttpStatus.FORBIDDEN, "拒绝访问");
                 }
             }else{//需登录
                 //这个Token由网关鉴权通过后写入Header
                 String JSONToken = request.getHeader(HttpHeaderConst.JSON_TOKEN);
                 if(!SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
-                    write(response, HttpStatus.FORBIDDEN, "拒绝连接");
+                    log.info("[权限过滤器]GATEWAY_SECRET_KEY错误(需登录)");
+                    write(response, HttpStatus.FORBIDDEN, "拒绝访问");
                 }else if (StringUtils.isBlank(JSONToken)){
+                    log.info("[权限过滤器]用户未登录");
                     write(response, HttpStatus.UNAUTHORIZED, "用户未登录");
                 }else{
                     //交由LoginUserArgumentResolver解析并注入接口
@@ -107,7 +116,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            log.info("[权限过滤器]系统异常：{}", e.getMessage(), e);
             write(response, HttpStatus.INTERNAL_SERVER_ERROR, "服务内部错误");
         }
     }

@@ -8,6 +8,6 @@ package hom.cluster.common.base.constants;
 public class HttpHeaderConst {
     public static final String ACCESS_TOKEN = "X-Access-Token";
     public static final String JSON_TOKEN = "X-Json-Token";
-    public static final String FEIGN_SECRET_KET = "Feign-Secret-Key";
-    public static final String GATEWAY_SECRET_KET = "Gateway-Secret-Key";
+    public static final String FEIGN_SECRET = "Feign-Secret-Key";
+    public static final String GATEWAY_SECRET = "Gateway-Secret-Key";
 }

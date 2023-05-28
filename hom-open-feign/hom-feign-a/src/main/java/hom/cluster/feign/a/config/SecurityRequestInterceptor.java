@@ -16,6 +16,6 @@ public class SecurityRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         //添加安全密码到请求头
-        requestTemplate.header(HttpHeaderConst.FEIGN_SECRET_KET, SecretKeyConst.FEIGN_SECRET_KEY);
+        requestTemplate.header(HttpHeaderConst.FEIGN_SECRET, SecretKeyConst.FEIGN_SECRET_KEY);
     }
 }

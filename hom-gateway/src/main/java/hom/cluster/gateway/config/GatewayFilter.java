@@ -77,7 +77,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             log.info("白名单Url: {}", requestUrl);
             //将密匙添加到Header
             ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
-                    .header(HttpHeaderConst.GATEWAY_SECRET_KET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
+                    .header(HttpHeaderConst.GATEWAY_SECRET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
             return chain.filter(mutateExchange);
         }
@@ -122,7 +122,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             //添加到Header，路由到下游服务
             ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
                     .header(HttpHeaderConst.JSON_TOKEN, JSONTokenBase64)
-                    .header(HttpHeaderConst.GATEWAY_SECRET_KET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
+                    .header(HttpHeaderConst.GATEWAY_SECRET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
             return chain.filter(mutateExchange);
         } catch (InvalidTokenException e) {
