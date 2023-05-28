@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import hom.cluster.common.base.code.BaseErrorCode;
+import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.common.base.res.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -40,9 +41,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class GatewayFilter implements GlobalFilter, Ordered {
-    private static final String JSON_TOKEN_HEADER = "X-Json-Token";
-    private static final String ACCESS_TOKEN_HEADER = "X-Access-Token";
-
     @Autowired
     private TokenStore tokenStore;
 
@@ -69,7 +67,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
 
         //2 检查token是否存在
         HttpHeaders headers = exchange.getRequest().getHeaders();
-        String token = headers.getFirst(ACCESS_TOKEN_HEADER);
+        String token = headers.getFirst(HttpHeaderConst.ACCESS_TOKEN);
         if (StringUtils.isBlank(token)) {
             return unauthorized(exchange, "Token缺失");
         }
@@ -105,7 +103,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             String JSONTokenBase64 = Base64Utils.encodeToString(JSONToken.getBytes(StandardCharsets.UTF_8));
 
             //添加到Header，路由到下游服务
-            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header(JSON_TOKEN_HEADER, JSONTokenBase64).build();
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header(HttpHeaderConst.JSON_TOKEN, JSONTokenBase64).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
             return chain.filter(mutateExchange);
         } catch (InvalidTokenException e) {

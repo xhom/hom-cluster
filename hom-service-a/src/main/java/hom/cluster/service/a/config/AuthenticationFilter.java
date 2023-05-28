@@ -86,7 +86,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 }
             }else{//需登录
                 //这个Token由网关鉴权通过后写入Header
-                String JSONTokenBase64 = request.getHeader(HttpHeaderConst.JSON_TOKEN_HEADER);
+                String JSONTokenBase64 = request.getHeader(HttpHeaderConst.JSON_TOKEN);
                 if (StringUtils.isBlank(JSONTokenBase64)){
                     //理论上不会为空
                     //除了一些不需要登录认证的接口，但需在网关中配置

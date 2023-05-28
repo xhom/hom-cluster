@@ -40,7 +40,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
             return null;
         }
 
-        String JSONTokenBase64 = request.getHeader(HttpHeaderConst.JSON_TOKEN_HEADER);
+        String JSONTokenBase64 = request.getHeader(HttpHeaderConst.JSON_TOKEN);
         if (StringUtils.isBlank(JSONTokenBase64)){
             return null;
         }
