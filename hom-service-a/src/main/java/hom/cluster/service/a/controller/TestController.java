@@ -22,14 +22,14 @@ public class TestController {
 
     //@NonAuth注解说明：
     //* 这个注解标记的接口将不会验证用户登录，接收到的登录用户是null
-    //1.接口提供给内部服务使用时：@NonAuth() 或 @NonAuth(NonAuthPolicy.INNER)
+    //1.接口提供给内部服务使用时：@NonAuth 或 @NonAuth(NonAuthPolicy.INNER)
     //2.接口暴露给外部（经网关转发）使用时：@NonAuth(NonAuthPolicy.OUTER)，但要在网关配置接口白名单
     //3.将接口同时暴露给内部服务和外部服务：@NonAuth(NonAuthPolicy.ALL)
     //4.这个注解也可以添加到Controller上，将对其中的所有接口生效，且优先级高于添加到方法上
 
     //这是一个供内部Feign调用的接口
     //这个接口只能给内部服务调用，外部无法调用（即使已登陆）
-    @NonAuth()
+    @NonAuth
     //@NonAuth(NonAuthPolicy.INNER)
     @RequestMapping("/inner")
     public Result inner(LoginUser loginUser){
