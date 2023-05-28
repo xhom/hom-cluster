@@ -16,8 +16,5 @@ public @interface NonAuth {
     /**
      * 开放权限类型，默认开放给内部服务
      */
-    //NonAuthPolicy value() default NonAuthPolicy.INNER;
-
     NonAuthPolicy value() default NonAuthPolicy.INNER;
-
 }
