@@ -3,7 +3,6 @@ package hom.cluster.service.a.config;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import hom.cluster.common.base.anno.NonAuth;
-import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.common.base.constants.SecretKeyConst;
 import hom.cluster.common.base.enums.NonAuthType;
@@ -50,7 +49,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try{
             HandlerExecutionChain handlerChain = requestMappingHandlerMapping.getHandler(request);
             if(Objects.isNull(handlerChain)){
-                unauthorized(response, "服务异常");
+                write(response, HttpStatus.INTERNAL_SERVER_ERROR, "服务异常");
                 return;
             }
 
@@ -77,7 +76,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response, "拒绝连接");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
                     }
                 }else if(NonAuthType.OUTER.equals(nonAuth.type())){
                     //外部调用（通过gateway）
@@ -85,14 +84,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response, "拒绝连接");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
                     }
                 }else{ //NonAuth.NonAuthType.ALL
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK) || SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){
                         //满足其中一个Key即可
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response, "拒绝连接");
+                        write(response, HttpStatus.FORBIDDEN, "拒绝连接");
                     }
                 }
             }else{//需登录
@@ -101,7 +100,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 if (StringUtils.isBlank(JSONTokenBase64)){
                     //理论上不会为空
                     //除了一些不需要登录认证的接口，但需在网关中配置
-                    unauthorized(response, "用户未登录");
+                    write(response, HttpStatus.UNAUTHORIZED, "用户未登录");
                 }else{
                     //交由LoginUserArgumentResolver解析并注入接口
                     filterChain.doFilter(request, response);
@@ -109,14 +108,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             }
         }catch (Exception e){
             e.printStackTrace();
-            unauthorized(response, e.getMessage());
+            write(response, HttpStatus.INTERNAL_SERVER_ERROR, "服务内部错误");
         }
     }
 
-    private void unauthorized(HttpServletResponse response, String message) throws IOException{
-        Result result = Result.failure(BaseErrorCode.UNAUTHORIZED.getCode(), message);
+    private void write(HttpServletResponse response, HttpStatus status, String message) throws IOException{
+        Result result = Result.failure(status.value(), message);
         String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(status.value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
         response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
     }
