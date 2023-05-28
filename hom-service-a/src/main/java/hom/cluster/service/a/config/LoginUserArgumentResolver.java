@@ -2,6 +2,7 @@ package hom.cluster.service.a.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.service.a.model.LoginUser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
@@ -23,8 +24,6 @@ import java.util.Objects;
  */
 @Component
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
-    private static final String JSON_TOKEN_HEADER = "X-Json-Token";
-
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return LoginUser.class.equals(methodParameter.getParameterType());
@@ -41,7 +40,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
             return null;
         }
 
-        String JSONTokenBase64 = request.getHeader(JSON_TOKEN_HEADER);
+        String JSONTokenBase64 = request.getHeader(HttpHeaderConst.JSON_TOKEN_HEADER);
         if (StringUtils.isBlank(JSONTokenBase64)){
             return null;
         }
