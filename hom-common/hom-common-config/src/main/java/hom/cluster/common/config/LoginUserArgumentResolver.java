@@ -26,12 +26,11 @@ import java.util.Objects;
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
     @Autowired
     private SpringBeanContext springBeanContext;
-    private static final HomConfig defaultHomConfig = new DefaultHomConfig();
+    private static HomConfig homConfig;
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        HomConfig homConfig = getHomConfig();
-        Class<?> loginUserBeanClass = homConfig.getLoginUserBeanClass();
+        Class<?> loginUserBeanClass = getHomConfig().getLoginUserBeanClass();
         return Objects.nonNull(loginUserBeanClass) && loginUserBeanClass.equals(methodParameter.getParameterType());
     }
 
@@ -53,14 +52,16 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
         String JSONToken = new String(Base64Utils.decodeFromString(JSONTokenBase64), StandardCharsets.UTF_8);
         JSONObject data = JSON.parseObject(JSONToken);
-        HomConfig homConfig = getHomConfig();
-        return homConfig.getLoginUserBean(data);
+        return getHomConfig().getLoginUserBean(data);
     }
 
     private HomConfig getHomConfig(){
-        HomConfig homConfig = springBeanContext.getBean(HomConfig.class);
+        if(Objects.nonNull(homConfig)){
+            return homConfig;
+        }
+        homConfig = springBeanContext.getBean(HomConfig.class);
         if(Objects.isNull(homConfig)){
-            homConfig = defaultHomConfig;
+            homConfig = new DefaultHomConfig();
         }
         return homConfig;
     }
