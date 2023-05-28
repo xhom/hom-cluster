@@ -5,7 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import hom.cluster.common.base.anno.NonAuth;
 import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.common.base.constants.SecretKeyConst;
-import hom.cluster.common.base.enums.NonAuthType;
+import hom.cluster.common.base.enums.NonAuthPolicy;
 import hom.cluster.common.base.res.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -70,7 +70,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 String FSK = request.getHeader(HttpHeaderConst.FEIGN_SECRET_KET);
                 String GSK = request.getHeader(HttpHeaderConst.GATEWAY_SECRET_KET);
 
-                if(NonAuthType.INNER.equals(nonAuth.type())){
+                if(NonAuthPolicy.INNER.equals(nonAuth.value())){
                     //内部调用，比如Feign
                     //需要校验FeignSecretKey(自定义的连接密码)
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(FSK)){
@@ -78,7 +78,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     }else{
                         write(response, HttpStatus.FORBIDDEN, "拒绝连接");
                     }
-                }else if(NonAuthType.OUTER.equals(nonAuth.type())){
+                }else if(NonAuthPolicy.OUTER.equals(nonAuth.value())){
                     //外部调用（通过gateway）
                     //需要校验GatewaySecretKey(自定义的连接密码)
                     if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(GSK)){

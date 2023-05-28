@@ -2,7 +2,7 @@ package hom.cluster.service.a.controller;
 
 import com.alibaba.fastjson.JSON;
 import hom.cluster.common.base.anno.NonAuth;
-import hom.cluster.common.base.enums.NonAuthType;
+import hom.cluster.common.base.enums.NonAuthPolicy;
 import hom.cluster.common.base.res.Result;
 import hom.cluster.service.a.model.LoginUser;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +22,15 @@ public class TestController {
 
     //@NonAuth注解说明：
     //* 这个注解标记的接口将不会验证用户登录，接收到的登录用户是null
-    //1.接口提供给内部服务使用时：@NonAuth() 或 @NonAuth(type = NonAuthType.INNER)
-    //2.接口暴露给外部（经网关转发）使用时：@NonAuth(type = NonAuthType.OUTER)，但要在网关配置接口白名单
-    //3.将接口同时暴露给内部服务和外部服务：@NonAuth(type = NonAuthType.ALL)
+    //1.接口提供给内部服务使用时：@NonAuth() 或 @NonAuth(NonAuthPolicy.INNER)
+    //2.接口暴露给外部（经网关转发）使用时：@NonAuth(NonAuthPolicy.OUTER)，但要在网关配置接口白名单
+    //3.将接口同时暴露给内部服务和外部服务：@NonAuth(NonAuthPolicy.ALL)
     //4.这个注解也可以添加到Controller上，将对其中的所有接口生效，且优先级高于添加到方法上
 
     //这是一个供内部Feign调用的接口
     //这个接口只能给内部服务调用，外部无法调用（即使已登陆）
     @NonAuth()
-    //@NonAuth(type = NonAuthType.INNER)
+    //@NonAuth(NonAuthPolicy.INNER)
     @RequestMapping("/inner")
     public Result inner(LoginUser loginUser){
         System.out.println("inner, loginUser: "+ JSON.toJSONString(loginUser));
@@ -39,7 +39,7 @@ public class TestController {
 
     //开放给外部的接口，需在网关中添加到白名单，调用此接口无需登录，所以应谨慎使用
     //注意：内部服务无法调用此接口
-    @NonAuth(type = NonAuthType.OUTER)
+    @NonAuth(NonAuthPolicy.OUTER)
     @RequestMapping("/outer")
     public Result outer(LoginUser loginUser){
         System.out.println("outer, loginUser: "+ JSON.toJSONString(loginUser));
@@ -47,7 +47,7 @@ public class TestController {
     }
 
     //同时开放给外部和内部服务
-    @NonAuth(type = NonAuthType.ALL)
+    @NonAuth(NonAuthPolicy.ALL)
     @RequestMapping("/all")
     public Result all(LoginUser loginUser){
         System.out.println("all, loginUser: "+ JSON.toJSONString(loginUser));

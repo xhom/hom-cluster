@@ -1,6 +1,6 @@
 package hom.cluster.common.base.anno;
 
-import hom.cluster.common.base.enums.NonAuthType;
+import hom.cluster.common.base.enums.NonAuthPolicy;
 
 import java.lang.annotation.*;
 
@@ -16,6 +16,8 @@ public @interface NonAuth {
     /**
      * 开放权限类型，默认开放给内部服务
      */
-    NonAuthType type() default NonAuthType.INNER;
+    //NonAuthPolicy value() default NonAuthPolicy.INNER;
+
+    NonAuthPolicy value() default NonAuthPolicy.INNER;
 
 }
