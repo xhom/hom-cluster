@@ -19,5 +19,6 @@
         <module>hom-common-dao</module>
         <module>hom-common-base</module>
         <module>hom-common-model</module>
+        <module>hom-common-config</module>
     </modules>
 </project>
