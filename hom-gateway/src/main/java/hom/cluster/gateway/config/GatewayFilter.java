@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.constants.HttpHeaderConst;
+import hom.cluster.common.base.constants.SecretKeyConst;
 import hom.cluster.common.base.res.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,11 +27,13 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -43,6 +47,9 @@ import java.util.stream.Collectors;
 public class GatewayFilter implements GlobalFilter, Ordered {
     @Autowired
     private TokenStore tokenStore;
+    @Autowired
+    private HomGatewayConfig homGatewayConfig;
+
 
     @Override
     public int getOrder() {
@@ -63,6 +70,16 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         //1 auth服务所有放行
         if (pathMatcher.match("/auth/**", requestUrl)) {
             return chain.filter(exchange);
+        }
+
+        List<String> urlWhiteList = homGatewayConfig.getUrlWhiteList();
+        if(!CollectionUtils.isEmpty(urlWhiteList) && urlWhiteList.contains(requestUrl)){
+            log.info("白名单Url: {}", requestUrl);
+            //将密匙添加到Header
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
+                    .header(HttpHeaderConst.GATEWAY_SECRET_KET, SecretKeyConst.GATEWAY_SECRET_KEY).build();
+            ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
+            return chain.filter(mutateExchange);
         }
 
         //2 检查token是否存在

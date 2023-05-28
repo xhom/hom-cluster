@@ -7,6 +7,7 @@ import hom.cluster.common.base.code.BaseErrorCode;
 import hom.cluster.common.base.constants.HttpHeaderConst;
 import hom.cluster.common.base.constants.SecretKeyConst;
 import hom.cluster.common.base.res.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,7 @@ import java.util.Objects;
  * @description: 权限过滤器
  * @date 2023/5/24 17:02
  */
+@Slf4j
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
@@ -47,7 +49,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         try{
             HandlerExecutionChain handlerChain = requestMappingHandlerMapping.getHandler(request);
             if(Objects.isNull(handlerChain)){
-                unauthorized(response, "handlerChain is null");
+                unauthorized(response, "服务异常");
                 return;
             }
 
@@ -72,7 +74,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.FEIGN_SECRET_KEY.equals(feignSecretKey)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response, "Feign连接密匙错误");
+                        unauthorized(response, "拒绝连接");
                     }
                 }else{
                     //外部调用（通过gateway）
@@ -81,7 +83,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     if(SecretKeyConst.GATEWAY_SECRET_KEY.equals(gatewaySecretKey)){
                         filterChain.doFilter(request, response);
                     }else{
-                        unauthorized(response, "Gateway连接密匙错误");
+                        unauthorized(response, "拒绝连接");
                     }
                 }
             }else{//需登录

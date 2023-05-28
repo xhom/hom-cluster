@@ -26,7 +26,14 @@ public class TestController {
     @NonAuth(isInner = true)
     @RequestMapping("/hello")
     public Result hello(LoginUser loginUser){
-        System.out.println("loginUser: "+ JSON.toJSONString(loginUser));
+        System.out.println("hello, loginUser: "+ JSON.toJSONString(loginUser));
         return Result.success("Hello, Im Service A, And test's value is: "+ testValue);
+    }
+
+    @NonAuth
+    @RequestMapping("/open")
+    public Result open(LoginUser loginUser){
+        System.out.println("open, loginUser: "+ JSON.toJSONString(loginUser));
+        return Result.success("Open, Im Service A");
     }
 }

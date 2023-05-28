@@ -36,3 +36,8 @@ spring:
             - Path=/b/**
           filters:
             - StripPrefix=1
+hom:
+  gateway:
+    #白名单
+    url-white-list:
+      - /a/test/open
