@@ -23,7 +23,18 @@ public class TestController {
      */
     @RequestMapping("/hello")
     public Result hello(){
+        return Result.success("Hello, Im Service B");
+    }
+
+    @RequestMapping("/feign1")
+    public Result feign1(){
         Result feignData = testFeignClient.inner();
-        return Result.success("Hello, Im Service B.", feignData);
+        return Result.success("Feign1, Im Service B.", feignData);
+    }
+
+    @RequestMapping("/feign2")
+    public Result feign2(){
+        Result feignData = testFeignClient.all();
+        return Result.success("Feign2, Im Service B.", feignData);
     }
 }

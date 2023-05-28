@@ -40,4 +40,5 @@ hom:
   gateway:
     #白名单
     url-white-list:
-      - /a/test/open
+      - /a/test/outer
+      - /a/test/all

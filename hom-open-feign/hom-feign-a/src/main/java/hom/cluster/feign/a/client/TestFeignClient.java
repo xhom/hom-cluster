@@ -15,4 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface TestFeignClient {
     @RequestMapping("/inner")
     Result inner();
+
+    @RequestMapping("/all")
+    Result all();
 }
