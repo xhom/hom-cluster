@@ -36,6 +36,8 @@ public class SampleXxlJob {
      */
     @XxlJob("demoJobHandler")
     public void demoJobHandler() throws Exception {
+        logger.info("Hello, demoJobHandler!");
+
         XxlJobHelper.log("XXL-JOB, Hello World.");
 
         for (int i = 0; i < 5; i++) {
@@ -43,7 +45,6 @@ public class SampleXxlJob {
             TimeUnit.SECONDS.sleep(2);
         }
         // default success
-        logger.info("Hello, demoJobHandler!");
     }
 
 
