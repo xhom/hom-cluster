@@ -13,5 +13,6 @@
 
 	<modules>
 		<module>xxl-job-admin</module>
+		<module>xxl-job-executor</module>
     </modules>
 </project>
