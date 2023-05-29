@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class XxlJobExecutor {
+public class JobExecutor {
 	public static void main(String[] args) {
-		SpringApplication.run(XxlJobExecutor.class, args);
+		SpringApplication.run(JobExecutor.class, args);
 	}
 }

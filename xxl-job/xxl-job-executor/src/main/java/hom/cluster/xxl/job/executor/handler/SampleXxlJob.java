@@ -43,7 +43,7 @@ public class SampleXxlJob {
             TimeUnit.SECONDS.sleep(2);
         }
         // default success
-        System.out.println("demoJobHandler execute success!!!");
+        logger.info("Hello, demoJobHandler!");
     }
 
 
