@@ -28,6 +28,7 @@
         <module>hom-service-a</module>
         <module>hom-service-b</module>
         <module>hom-open-feign</module>
+        <module>xxl-job</module>
     </modules>
 
     <dependencyManagement>
@@ -67,6 +68,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.5.3</version>
+            </dependency>
+            <!-- MyBatis -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
             </dependency>
             <!-- MySQL JDBC驱动 -->
             <dependency>
