@@ -140,7 +140,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
     }
 
     private Mono<Void> unauthorized(ServerWebExchange exchange, String message, Object data){
-        return write2response(exchange, Result.failure(BaseErrorCode.UNAUTHORIZED.code(), message, data));
+        return write2response(exchange, Result.failure(BaseErrorCode.UNAUTHORIZED.getCode(), message, data));
     }
 
     private Mono<Void> write2response(ServerWebExchange exchange, Result result){

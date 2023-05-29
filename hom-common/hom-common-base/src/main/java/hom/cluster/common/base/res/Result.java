@@ -27,12 +27,11 @@ public class Result {
         return success(BaseErrorCode.SUCCESS, data);
     }
     public static Result success(String message, Object data){
-        return new Result(true, BaseErrorCode.SUCCESS.code(), message, data);
+        return new Result(true, BaseErrorCode.SUCCESS.getCode(), message, data);
     }
     public static Result success(ErrorCode errorCode, Object data){
-        return new Result(true, errorCode.code(), errorCode.msg(), data);
+        return new Result(true, errorCode.getCode(), errorCode.getMsg(), data);
     }
-
 
     public static Result failure(){
         return failure(BaseErrorCode.FAILURE);
@@ -47,7 +46,7 @@ public class Result {
         return failure(errorCode, null);
     }
     public static Result failure(ErrorCode errorCode, Object data){
-        return failure(errorCode.code(), errorCode.msg(), data);
+        return failure(errorCode.getCode(), errorCode.getMsg(), data);
     }
     public static Result failure(Integer code, String message){
         return failure(code, message, null);
