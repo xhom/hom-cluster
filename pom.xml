@@ -21,18 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!-- 版本对应关系,详见：https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E#%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB
-    Spring Cloud Alibaba Version	Spring Cloud Version	      Spring Boot Version
-    =================================================================================
-    2021.0.1.0	                    2021.0.1	                  2.6.3
-    2.2.7.RELEASE	                Hoxton.SR12                   2.3.12.RELEASE
-    2021.1	                        2020.0.1	                  2.4.2
-    2.2.6.RELEASE	                Hoxton.SR9	                  2.3.2.RELEASE
-    2.1.4.RELEASE	                Greenwich.SR6	              2.1.13.RELEASE
-    2.2.1.RELEASE	                Hoxton.SR3	                  2.2.5.RELEASE
-    2.2.0.RELEASE	                Hoxton.RELEASE	              2.2.X.RELEASE
-    -->
-
     <modules>
         <module>hom-common</module>
         <module>hom-auth</module>

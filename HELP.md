@@ -23,3 +23,5 @@
 | 2.1.2.RELEASE                | Greenwich            | 2.1.X.RELEASE       |
 | 2.0.4.RELEASE                | Finchley             | 2.0.X.RELEASE       |
 | 1.5.1.RELEASE                | Edgware              | 1.5.X.RELEASE       |
+
+* 数据来源：[Spring Cloud Alibaba 版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E#%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB)
