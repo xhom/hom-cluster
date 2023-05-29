@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import hom.cluster.common.base.constants.HttpHeaderConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
@@ -29,13 +31,14 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     private static HomConfig homConfig;
 
     @Override
-    public boolean supportsParameter(MethodParameter methodParameter) {
+    public boolean supportsParameter(@NonNull MethodParameter methodParameter) {
         Class<?> loginUserBeanClass = getHomConfig().getLoginUserBeanClass();
         return Objects.nonNull(loginUserBeanClass) && loginUserBeanClass.equals(methodParameter.getParameterType());
     }
 
+
     @Override
-    public Object resolveArgument(MethodParameter methodParameter,
+    public Object resolveArgument(@Nullable MethodParameter methodParameter,
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
@@ -61,7 +64,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         }
         homConfig = springBeanContext.getBean(HomConfig.class);
         if(Objects.isNull(homConfig)){
-            homConfig = new DefaultHomConfig();
+            homConfig = DefaultHomConfig.INSTANCE;
         }
         return homConfig;
     }

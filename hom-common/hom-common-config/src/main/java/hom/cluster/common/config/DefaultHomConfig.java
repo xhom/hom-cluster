@@ -8,6 +8,8 @@ import com.alibaba.fastjson.JSONObject;
  * @date 2023/5/28 21:24
  */
 public class DefaultHomConfig implements HomConfig {
+    public static final HomConfig INSTANCE = new DefaultHomConfig();
+
     @Override
     public Class<?> getLoginUserBeanClass() {
         return null;
