@@ -81,6 +81,12 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.44</version>
             </dependency>
+            <!-- XXL Job -->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>2.4.0</version>
+            </dependency>
             <!-- 以下为自有项目的依赖 -->
             <dependency>
                 <groupId>hom.cluster</groupId>
