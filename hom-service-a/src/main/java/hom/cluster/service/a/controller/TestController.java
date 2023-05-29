@@ -28,7 +28,7 @@ public class TestController {
     //4.这个注解也可以添加到Controller上，将对其中的所有接口生效，且优先级高于添加到方法上
 
     //这是一个供内部Feign调用的接口
-    //这个接口只能给内部服务调用，外部无法调用（即使已登陆）
+    //这个接口只能给内部服务调用，外部无法调用（即使已登陆或加入白名单）
     @NonAuth
     //@NonAuth(NonAuthPolicy.INNER)
     @RequestMapping("/inner")
@@ -56,7 +56,7 @@ public class TestController {
 
     //正常接口（需要登录的）
     @RequestMapping("/hello")
-    public Result haha(LoginUser loginUser){
+    public Result hello(LoginUser loginUser){
         System.out.println("hello, loginUser: "+ JSON.toJSONString(loginUser));
         return Result.success("Hello, Im Service A, And test's value is: "+testValue);
     }
