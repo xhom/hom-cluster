@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @Value("${test}")
-    private String testValue;
+    @Value("${hello}")
+    private String helloValue;
 
     //@NonAuth注解说明：
     //* 这个注解标记的接口将不会验证用户登录，接收到的登录用户是null
@@ -58,6 +58,6 @@ public class TestController {
     @RequestMapping("/hello")
     public Result hello(LoginUser loginUser){
         System.out.println("hello, loginUser: "+ JSON.toJSONString(loginUser));
-        return Result.success("Hello, Im Service A, And test's value is: "+testValue);
+        return Result.success("Hello, Im Service A, And hello config value is: " + helloValue);
     }
 }

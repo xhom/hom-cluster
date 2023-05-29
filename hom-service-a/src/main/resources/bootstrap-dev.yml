@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        group: HOM_DEV_GROUP
+        namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7
+      config: #对应的配置文件DataId: hom-service-a.yaml
+        file-extension: yaml
+        group: HOM_DEV_GROUP
+        namespace: 12e6ef0b-3ab9-449c-8331-5c7cfcf5b9f7

@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        group: HOM_TEST_GROUP
+        namespace: db3f8fa6-c4bb-4d94-ae93-dfe1c7280252

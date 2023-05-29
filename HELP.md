@@ -25,3 +25,15 @@
 | 1.5.1.RELEASE                | Edgware              | 1.5.X.RELEASE       |
 
 * 数据来源：[Spring Cloud Alibaba 版本说明](https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E#%E7%BB%84%E4%BB%B6%E7%89%88%E6%9C%AC%E5%85%B3%E7%B3%BB)
+
+#### Nacos鉴权（Version 2.2.2）开启
+* Nacos服务默认是不需要密码就可以连接的 
+* 需要修改Nacos服务conf目录 下的application.properties文件
+* 具体修改项如下：
+1. nacos.core.auth.enabled=true //启用密码
+2. nacos.core.auth.system.type=nacos
+3. nacos.core.auth.plugin.nacos.token.secret.key=随机Base64不小于32位
+4. nacos.core.auth.server.identity.key=xxx
+5. nacos.core.auth.server.identity.value=xxx
+* 用户需要前端配置：权限控制-用户列表-创建用户，并给用户分配对应命名空间的权限（权限的动作要指定为：读写 (rw)）
+* identity配置项分别作为Header头的key和value，添加到Header可绕过权限校验，可以理解为一个自定义的固定 Token
