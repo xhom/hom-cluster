@@ -7,8 +7,9 @@ xxl:
   job:
     accessToken: 6KWUjrRMNkq34Uxx
     admin:
-      addresses: http://127.0.0.1:8071/xxl-job-admin
+      addresses: http://106.91.199.94:8071/xxl-job-admin
     executor:
+      port: 9999
       appname: xxl-job-executor
       logpath: /xxl-job-logs
       logretentiondays: 30
