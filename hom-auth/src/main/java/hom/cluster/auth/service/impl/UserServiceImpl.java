@@ -1,7 +1,7 @@
 package hom.cluster.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import hom.cluster.auth.service.UserService;
-import hom.cluster.common.dao.base.qr.Querier;
 import hom.cluster.common.dao.entity.LocalUser;
 import hom.cluster.common.dao.mapper.LocalUserMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LocalUser getUserByUsername(String username) {
-        return localUserMapper.selectOne(Querier.<LocalUser>query().eq("username", username));
-        //return VirtualDB.getUser(username);
+        return localUserMapper.selectOne(new QueryWrapper<LocalUser>().lambda().eq(LocalUser::getUsername, username));
     }
 }

@@ -4,7 +4,7 @@ spring:
     url: jdbc:mysql://mysql.sqlpub.com:3306/xxdb_8999?useUnicode=yes&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: wahaha
     password: 9cf502ed7d655f36
-mybatis:
+mybatis-plus:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: hom.cluster.common.dao.entity

@@ -1,8 +1,9 @@
 package hom.cluster.common.dao.entity;
 
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -12,9 +13,9 @@ import java.util.Date;
  * @date 2023/5/25 16:31
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@TableName("local_user")
 public class LocalUser {
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String username;
     private String password;
