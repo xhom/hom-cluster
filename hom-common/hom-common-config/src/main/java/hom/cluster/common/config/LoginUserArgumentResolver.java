@@ -26,9 +26,9 @@ import java.util.Objects;
  */
 @Component
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+    private static HomConfig homConfig;
     @Autowired
     private SpringBeanContext springBeanContext;
-    private static HomConfig homConfig;
 
     @Override
     public boolean supportsParameter(@NonNull MethodParameter methodParameter) {
@@ -54,8 +54,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         }
 
         String JSONToken = new String(Base64Utils.decodeFromString(JSONTokenBase64), StandardCharsets.UTF_8);
-        JSONObject data = JSON.parseObject(JSONToken);
-        return getHomConfig().getLoginUserBean(data);
+        JSONObject json = JSON.parseObject(JSONToken);
+        return getHomConfig().getLoginUserBean(json);
     }
 
     private HomConfig getHomConfig(){
