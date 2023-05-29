@@ -28,7 +28,7 @@
         <module>hom-service-a</module>
         <module>hom-service-b</module>
         <module>hom-open-feign</module>
-        <module>xxl-job</module>
+        <module>hom-xxl-job</module>
     </modules>
 
     <dependencyManagement>

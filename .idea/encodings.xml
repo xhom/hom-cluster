@@ -27,13 +27,13 @@
     <file url="file://$PROJECT_DIR$/hom-service-b/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-service-b/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/hom-service-b/src/main/resources/application.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/xxl-job-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/xxl-job-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/xxl-job-executor/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hom-xxl-job/xxl-job-executor/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/xxl-job-admin/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/xxl-job-admin/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/xxl-job-executor/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/xxl-job/xxl-job-executor/src/main/resources" charset="UTF-8" />
   </component>
 </project>
