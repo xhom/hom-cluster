@@ -16,4 +16,11 @@
 		<module>xxl-job-admin</module>
 		<module>xxl-job-executor</module>
     </modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.xuxueli</groupId>
+			<artifactId>xxl-job-core</artifactId>
+		</dependency>
+	</dependencies>
 </project>
