@@ -34,6 +34,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Autowired
     private PermissionService permissionService;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LocalUser localUser = userService.getUserByUsername(username);
@@ -50,11 +51,12 @@ public class SecurityUserDetailsService implements UserDetailsService {
             codes.toArray(authorities);
         }
 
+        String password = passwordEncoder.encode(localUser.getPassword());
+
         //身份令牌
         JSONObject principal = new JSONObject();
         principal.put("userid", localUser.getId());
         principal.put("username", localUser.getUsername());
-        String password = passwordEncoder.encode(localUser.getPassword());
         String principalJson = JSON.toJSONString(principal, SerializerFeature.WriteMapNullValue);
         System.out.println("principal:" + principalJson);
         return User.withUsername(principalJson)

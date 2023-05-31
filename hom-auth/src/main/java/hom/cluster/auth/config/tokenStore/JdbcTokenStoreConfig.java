@@ -1,23 +1,16 @@
-package hom.cluster.auth.config;
+package hom.cluster.auth.config.tokenStore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.jwk.JwkTokenStore;
 
 import javax.sql.DataSource;
-import java.util.Collections;
 
 /**
  * @author visy.wang
@@ -25,10 +18,9 @@ import java.util.Collections;
  * @date 2023/5/23 22:54
  */
 @Configuration
-public class TokenConfig {
+public class JdbcTokenStoreConfig {
     @Autowired
     private DataSource dataSource;
-    private static final String JWT_SIGNING_KEY = "hom.cluster.jwt.sign.key";
 
     @Bean
     public TokenStore tokenStore() {
@@ -44,23 +36,28 @@ public class TokenConfig {
         return new JdbcTokenStore(dataSource);
     }
 
+    /**
+     * 密码加密器
+     */
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        /*
-         *   JWT校验规则:
-         *   1、设置jwt和signingkey(自定义，加密解密保持一致即可)
-         *   2、按"."对jwt分成三部分，即: header、payload、sign
-         *   3、取第一部分进行base64解码，获取加密方式
-         *   4、取第二部分进行base64解码，获取业务参数，即payload
-         *   5、使用加密方式和signingkey创建校验器，对header+payload进行加密，并与sign (即第=部分) 进行对比
-         *   6、取出payload的有效期进行校验，是否过期通过校验，返回claims信息
-         */
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(JWT_SIGNING_KEY);
-        return converter;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     /**
+     * 客户端详情服务（存放在数据库）
+     * @param dataSource 数据源
+     * @param passwordEncoder 加密器
+     */
+    @Bean
+    public ClientDetailsService myClientDetailsService(DataSource dataSource,
+                                                     PasswordEncoder passwordEncoder) {
+        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
+        clientDetailsService.setPasswordEncoder(passwordEncoder);
+        return clientDetailsService;
+    }
+
+    /*
      * 配置令牌管理
      */
     /*@Bean
@@ -77,7 +74,7 @@ public class TokenConfig {
         return service;
     }*/
 
-    /**
+    /*
      * 授权码存储方式
      */
     /*@Bean

@@ -1,5 +1,6 @@
 package hom.cluster.auth.config;
 
+import hom.cluster.auth.common.GrantTypeConst;
 import hom.cluster.auth.component.AuthExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,15 +32,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private static final Integer ACCESS_TOKEN_VALIDITY_SECONDS = 3600;
     //RefreshToken有效期（秒）
     private static final Integer REFRESH_TOKEN_VALIDITY_SECONDS = 4800;
-    //简化授权模式
-    private static final String GRANT_TYPE_IMPLICIT = "implicit";
-    //密码授权模式
-    private static final String GRANT_TYPE_PASSWORD = "password";
-    //Token刷新授权模式
-    private static final String GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
-    //授权码模式
-    private static final String GRANT_TYPE_AUTHORIZATION_CODE = "authorization_code";
-
 
     @Autowired
     private TokenStore tokenStore;
@@ -49,29 +41,32 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthExceptionTranslator authExceptionTranslator;
+    /*
+    @Autowired
+    private ClientDetailsService myClientDetailsService;
+    */
 
-    /*@Autowired
-    @Qualifier("myClientDetailsService")
-    private ClientDetailsService clientService;
+    /*
+    @Autowired
+    private TokenEnhancerChain jwtTokenEnhancerChain;
+    @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    */
+
+    /*
     @Autowired
     private AuthorizationServerTokenServices tokenService;
 
     @Autowired
     private AuthorizationCodeServices authorizationCodeServices;
-
-    @Bean("myClientDetailsService")
-    public ClientDetailsService clientDetailsService(DataSource dataSource, PasswordEncoder passwordEncoder) {
-        JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
-        clientDetailsService.setPasswordEncoder(passwordEncoder);
-        return clientDetailsService;
-    }*/
+    */
 
     /**
      * 配置客户端详细信息服务
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        //clients.withClientDetails(clientService);
+        //clients.withClientDetails(myClientDetailsService); //使用数据库存储
         clients.inMemory() //使用内存存储
                 .withClient(CLIENT_ID)
                 .resourceIds(RESOURCE_ID)
@@ -79,7 +74,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                 .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .scopes(SCOPES)
-                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, GRANT_TYPE_REFRESH_TOKEN);
+                .authorizedGrantTypes(GrantTypeConst.PASSWORD, GrantTypeConst.REFRESH_TOKEN);
     }
 
     /**
@@ -104,6 +99,9 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
+                //.accessTokenConverter(jwtAccessTokenConverter)//token转换器(JWT时需配置)
+                //.tokenEnhancer(jwtTokenEnhancerChain)//token加强器(JWT时需配置)
+                //.userDetailsService(userService)//执行token刷新需要带上此参数
                 .exceptionTranslator(authExceptionTranslator) //自定义异常处理
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST); //Token获取的请求方式
                /*.authorizationCodeServices(authorizationCodeServices)
