@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,8 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         JSONObject result = new JSONObject();
         if(StringUtils.hasText(token)){
             //删除储存的认证数据
-            tokenStore.readAccessToken(token);
+            OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+            tokenStore.removeAccessToken(accessToken);
             result.put("success", true);
             result.put("code", 1);
             result.put("message", "退出成功");
