@@ -39,7 +39,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     //RefreshToken有效期（秒）
     private static final Integer REFRESH_TOKEN_VALIDITY_SECONDS = 4800;
 
-    @Resource(name="jwtTokenStore")
+    @Resource(name="redisTokenStore")
     private TokenStore tokenStore;
 
     @Autowired
@@ -100,12 +100,12 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         if(JwtTokenStore.class.equals(tokenStore.getClass())){
             configure4Jwt(endpoints);
         }else{
-            configure4Jdbc(endpoints);
+            configure4JdbcOrRedis(endpoints);
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void configure4Jdbc(AuthorizationServerEndpointsConfigurer endpoints){
+    private void configure4JdbcOrRedis(AuthorizationServerEndpointsConfigurer endpoints){
         endpoints
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)

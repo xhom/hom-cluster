@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class GatewayFilter implements GlobalFilter, Ordered {
-    @Resource(name = "jwtTokenStore")
+    @Resource(name = "redisTokenStore")
     private TokenStore tokenStore;
     @Autowired
     private HomGatewayConfig homGatewayConfig;
