@@ -3,7 +3,6 @@ package hom.cluster.auth.config.tokenStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
@@ -21,6 +20,8 @@ import javax.sql.DataSource;
 public class JdbcTokenStoreConfig {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
     public TokenStore jdbcTokenStore() {
@@ -37,21 +38,10 @@ public class JdbcTokenStoreConfig {
     }
 
     /**
-     * 密码加密器
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /**
      * 客户端详情服务（存放在数据库）
-     * @param dataSource 数据源
-     * @param passwordEncoder 加密器
      */
     @Bean
-    public ClientDetailsService myClientDetailsService(DataSource dataSource,
-                                                     PasswordEncoder passwordEncoder) {
+    public ClientDetailsService myClientDetailsService() {
         JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
         clientDetailsService.setPasswordEncoder(passwordEncoder);
         return clientDetailsService;
