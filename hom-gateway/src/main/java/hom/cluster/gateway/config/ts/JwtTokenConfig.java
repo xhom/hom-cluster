@@ -1,4 +1,4 @@
-package hom.cluster.auth.config.tokenStore;
+package hom.cluster.gateway.config.ts;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
  * @date 2023/5/23 22:54
  */
 @Configuration
-public class JwtTokenStoreConfig {
+public class JwtTokenConfig {
     private static final String JWT_SIGNING_KEY = "hom.cluster.jwt.sign.key";
 
     @Bean

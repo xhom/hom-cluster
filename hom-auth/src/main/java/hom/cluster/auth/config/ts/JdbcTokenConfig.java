@@ -1,4 +1,4 @@
-package hom.cluster.auth.config.tokenStore;
+package hom.cluster.auth.config.ts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  * @date 2023/5/23 22:54
  */
 @Configuration
-public class JdbcTokenStoreConfig {
+public class JdbcTokenConfig {
     @Autowired
     private DataSource dataSource;
     @Autowired

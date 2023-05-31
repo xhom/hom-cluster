@@ -1,4 +1,4 @@
-package hom.cluster.gateway.config;
+package hom.cluster.gateway.config.ts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,16 +10,16 @@ import javax.sql.DataSource;
 
 /**
  * @author visy.wang
- * @description: 令牌存储配置
+ * @description: 令牌存储配置(JDBC)
  * @date 2023/5/24 15:07
  */
 @Configuration
-public class TokenConfig {
+public class JdbcTokenConfig {
     @Autowired
     private DataSource dataSource;
 
     @Bean
-    public TokenStore tokenStore() {
+    public TokenStore jdbcTokenStore() {
         //将Token保存到数据库
         return new JdbcTokenStore(dataSource);
     }

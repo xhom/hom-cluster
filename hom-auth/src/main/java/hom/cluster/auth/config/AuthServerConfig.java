@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.annotation.Resource;
 
@@ -38,12 +39,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     //RefreshToken有效期（秒）
     private static final Integer REFRESH_TOKEN_VALIDITY_SECONDS = 4800;
 
-    //正常情况下只会用到其中一个TokenStore
-    //不需要的可以移除，相关Bean也不用注入容器
-    @Resource(name="jdbcTokenStore")
-    private TokenStore jdbcTokenStore;
     @Resource(name="jwtTokenStore")
-    private TokenStore jwtTokenStore;
+    private TokenStore tokenStore;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -100,13 +97,17 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        configure4Jwt(endpoints);
+        if(JwtTokenStore.class.equals(tokenStore.getClass())){
+            configure4Jwt(endpoints);
+        }else{
+            configure4Jdbc(endpoints);
+        }
     }
 
     @SuppressWarnings("unchecked")
     private void configure4Jdbc(AuthorizationServerEndpointsConfigurer endpoints){
         endpoints
-                .tokenStore(jdbcTokenStore)
+                .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .exceptionTranslator(authExceptionTranslator) //自定义异常处理
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST); //Token获取的请求方式
@@ -115,7 +116,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @SuppressWarnings("unchecked")
     private void configure4Jwt(AuthorizationServerEndpointsConfigurer endpoints){
         endpoints
-                .tokenStore(jwtTokenStore)
+                .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(jwtAccessTokenConverter)//jwtToken转换器
                 .exceptionTranslator(authExceptionTranslator) //自定义异常处理

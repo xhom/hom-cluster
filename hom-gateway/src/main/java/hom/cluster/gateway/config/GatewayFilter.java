@@ -31,6 +31,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class GatewayFilter implements GlobalFilter, Ordered {
-    @Autowired
+    @Resource(name = "jwtTokenStore")
     private TokenStore tokenStore;
     @Autowired
     private HomGatewayConfig homGatewayConfig;
@@ -93,6 +94,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
         //4 判断是否是有效的token
         try {
             OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
+            log.info("OAuth2AccessToken: {}", JSON.toJSONString(accessToken));
             if(Objects.isNull(accessToken)){
                 log.info("Token不存在：{}", token);
                 return unauthorized(exchange, "无效Token", token);
@@ -104,6 +106,7 @@ public class GatewayFilter implements GlobalFilter, Ordered {
             }
 
             OAuth2Authentication authentication = tokenStore.readAuthentication(token);
+            log.info("authentication: {}", JSON.toJSONString(authentication));
             if(Objects.isNull(authentication)){
                 log.info("Token无法获取用户信息：{}", token);
                 return unauthorized(exchange, "无效Token", token);
