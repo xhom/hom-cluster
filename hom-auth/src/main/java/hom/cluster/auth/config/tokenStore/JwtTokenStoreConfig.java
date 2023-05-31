@@ -1,33 +1,26 @@
 package hom.cluster.auth.config.tokenStore;
 
-import hom.cluster.auth.component.JwtTokenEnhancer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author visy.wang
  * @description: 令牌存储配置(JWT)
  * @date 2023/5/23 22:54
  */
-//@Configuration
+@Configuration
 public class JwtTokenStoreConfig {
     private static final String JWT_SIGNING_KEY = "hom.cluster.jwt.sign.key";
 
     @Bean
-    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
+    public TokenStore jwtTokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
         return new JwtTokenStore(jwtAccessTokenConverter);
     }
 
-    //Jwt Token转换器
+    //JwtToken转换器
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         /*
@@ -42,31 +35,5 @@ public class JwtTokenStoreConfig {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setSigningKey(JWT_SIGNING_KEY);
         return converter;
-    }
-
-    //Token加强器，用于存储自己想要的信息到jwt中
-    @Bean
-    public JwtTokenEnhancer jwtTokenEnhancer() {
-        return new JwtTokenEnhancer();
-    }
-
-    //token加强器链，把加强器和转换器加入链中
-    @Bean
-    public TokenEnhancerChain jwtTokenEnhancerChain(JwtTokenEnhancer jwtTokenEnhancer,
-                                                 JwtAccessTokenConverter jwtAccessTokenConverter){
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        List<TokenEnhancer> enhancers = new ArrayList<>();
-        enhancers.add(jwtTokenEnhancer);
-        enhancers.add(jwtAccessTokenConverter);
-        enhancerChain.setTokenEnhancers(enhancers);
-        return enhancerChain;
-    }
-
-    /**
-     * 密码加密器
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

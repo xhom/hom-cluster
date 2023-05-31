@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 /**
  * @author visy.wang
- * @description: 令牌存储配置
+ * @description: 令牌存储配置(JDBC)
  * @date 2023/5/23 22:54
  */
 @Configuration
@@ -23,7 +23,7 @@ public class JdbcTokenStoreConfig {
     private DataSource dataSource;
 
     @Bean
-    public TokenStore tokenStore() {
+    public TokenStore jdbcTokenStore() {
         //Token+认证信息的存储方式：
         //一共有以下五种实现方式：
 
