@@ -1,5 +1,6 @@
 package hom.cluster.auth.config;
 
+import hom.cluster.auth.component.MyLogoutSuccessHandler;
 import hom.cluster.auth.component.SecurityUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private MyLogoutSuccessHandler logoutSuccessHandler;
     @Autowired
     private SecurityUserDetailsService userDetailsService;
 
@@ -57,7 +60,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable() //关闭跨域限制
                 //.formLogin() //表单登录配置
                 //.loginProcessingUrl("/login").permitAll()
-                .logout().logoutUrl("/logout") //退出配置
+                .logout() //退出配置
+                .logoutUrl("/oauth/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .and()
                 .authorizeRequests().antMatchers("/**").permitAll();
     }
