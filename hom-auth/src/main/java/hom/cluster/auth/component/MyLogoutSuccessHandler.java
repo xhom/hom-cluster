@@ -17,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -48,7 +47,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
             }
             result = OAuth2Result.success(1, "退出成功");
         }else{
-            result = OAuth2Result.failure(0, "退出失败");
+            result = OAuth2Result.failure(0, "退出失败", "Token缺失");
         }
         String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
