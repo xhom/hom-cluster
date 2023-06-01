@@ -1,8 +1,9 @@
 package hom.cluster.auth.component;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.http.HttpHeaders;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import hom.cluster.auth.common.OAuth2Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -16,13 +17,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
 
 /**
  * @author visy.wang
  * @description: 自定义退出成功处理器
  * @date 2023/5/31 19:14
  */
+@Slf4j
 @Component
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
     @Resource(name="redisTokenStore")
@@ -32,23 +37,21 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         String token = request.getHeader(ACCESS_TOKEN_HEADER);
-        System.out.println("token: "+ token);
+        log.info("退出登录: {}", token);
 
-        JSONObject result = new JSONObject();
+        OAuth2Result result;
         if(StringUtils.hasText(token)){
             //删除储存的认证数据
             OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
-            tokenStore.removeAccessToken(accessToken);
-            result.put("success", true);
-            result.put("code", 1);
-            result.put("message", "退出成功");
+            if(Objects.nonNull(accessToken)){
+                tokenStore.removeAccessToken(accessToken);
+            }
+            result = OAuth2Result.success(1, "退出成功");
         }else{
-            result.put("success", false);
-            result.put("code", 0);
-            result.put("message", "退出失败");
+            result = OAuth2Result.failure(0, "退出失败");
         }
+        String body = JSON.toJSONString(result, SerializerFeature.WriteMapNullValue);
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        String body = JSON.toJSONString(result);
         response.getOutputStream().write(body.getBytes(StandardCharsets.UTF_8));
     }
 }

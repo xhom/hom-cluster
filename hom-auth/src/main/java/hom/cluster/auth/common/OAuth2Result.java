@@ -18,6 +18,16 @@ public class OAuth2Result {
     private String message;
     private Object data;
 
+    public static OAuth2Result success(Integer code, String message){
+        return success(code, message, null);
+    }
+    public static OAuth2Result success(Integer code, String message, Object data){
+        return new OAuth2Result(true, code, message, data);
+    }
+
+    public static OAuth2Result failure(Integer code, String message){
+        return failure(code, message, null);
+    }
     public static OAuth2Result failure(Integer code, String message, Object data){
         return new OAuth2Result(false, code, message, data);
     }
