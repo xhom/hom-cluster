@@ -1,6 +1,6 @@
 package hom.cluster.auth.config;
 
-import hom.cluster.auth.common.GrantTypeConst;
+import hom.cluster.auth.common.GrantTypes;
 import hom.cluster.auth.component.AuthExceptionTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -75,7 +75,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                 .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .scopes(SCOPES)
-                .authorizedGrantTypes(GrantTypeConst.PASSWORD, GrantTypeConst.REFRESH_TOKEN);
+                .authorizedGrantTypes(GrantTypes.PASSWORD, GrantTypes.REFRESH_TOKEN);
     }
 
     /**

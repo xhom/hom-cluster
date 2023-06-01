@@ -5,7 +5,7 @@ package hom.cluster.auth.common;
  * @description: 授权类型
  * @date 2023/5/31 15:19
  */
-public class GrantTypeConst {
+public class GrantTypes {
     //简化授权模式
     public static final String IMPLICIT = "implicit";
     //密码授权模式
