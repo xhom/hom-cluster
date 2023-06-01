@@ -1,4 +1,4 @@
-package hom.cluster.gateway.config.ts;
+package hom.cluster.gateway.config.token;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,6 @@ public class JdbcTokenConfig {
 
     @Bean
     public TokenStore jdbcTokenStore() {
-        //将Token保存到数据库
         return new JdbcTokenStore(dataSource);
     }
 }

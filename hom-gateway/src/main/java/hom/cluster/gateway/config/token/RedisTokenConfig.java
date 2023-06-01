@@ -1,4 +1,4 @@
-package hom.cluster.gateway.config.ts;
+package hom.cluster.gateway.config.token;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

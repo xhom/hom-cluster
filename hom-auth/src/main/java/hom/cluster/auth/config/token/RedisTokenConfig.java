@@ -1,4 +1,4 @@
-package hom.cluster.auth.config.ts;
+package hom.cluster.auth.config.token;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
