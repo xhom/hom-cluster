@@ -71,7 +71,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.inMemory() //使用内存存储
                 .withClient(CLIENT_ID)
                 .resourceIds(RESOURCE_ID)
-                .secret(passwordEncoder.encode(CLIENT_SECRET))
+                .secret(passwordEncoder.encode(CLIENT_SECRET)) //存在数据库的时候同样需要先加密
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                 .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .scopes(SCOPES)

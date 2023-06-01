@@ -51,6 +51,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
             codes.toArray(authorities);
         }
 
+        //正常情况下应该先加密后存在数据库，而不是存明文，然后在此处加密
         String password = passwordEncoder.encode(localUser.getPassword());
 
         //身份令牌
