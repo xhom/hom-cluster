@@ -40,12 +40,13 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
 
         OAuth2Result result;
         if(StringUtils.hasText(token)){
-            //删除储存的认证数据
+            //删除Token
             OAuth2AccessToken accessToken = tokenStore.readAccessToken(token);
-            if(Objects.nonNull(accessToken)){
+            boolean isTokenExists = Objects.nonNull(accessToken);
+            if(isTokenExists){
                 tokenStore.removeAccessToken(accessToken);
             }
-            result = OAuth2Result.success(1, "退出成功");
+            result = OAuth2Result.success(1, "退出成功", isTokenExists?"E":"NE");
         }else{
             result = OAuth2Result.failure(0, "退出失败", "Token缺失");
         }
