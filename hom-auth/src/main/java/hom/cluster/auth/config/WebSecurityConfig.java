@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //定义用户查询的方式和加密器
         auth.userDetailsService(userDetailsService);
+                //.passwordEncoder(passwordEncoder()); //默认是BCryptPasswordEncoder，也可以指定别的
     }
 
     @Override
