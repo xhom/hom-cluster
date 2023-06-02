@@ -42,6 +42,7 @@ public class JdbcTokenConfig {
     public ClientDetailsService myClientDetailsService() {
         JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
         //指定secret的加密方式，保存在数据库的时候也应该采用同样的方式加密
+        //默认是NoOpPasswordEncoder，即使用不加密的明文
         clientDetailsService.setPasswordEncoder(passwordEncoder);
         return clientDetailsService;
     }*/
