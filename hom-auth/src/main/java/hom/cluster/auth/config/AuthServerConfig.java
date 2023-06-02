@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -27,13 +26,13 @@ import javax.annotation.Resource;
 @Configuration
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     //客户端ID
-    private static final String CLIENT_ID = "client_discovery";
+    private static final String CLIENT_ID = "client_a";
     //客户端密匙
-    private static final String CLIENT_SECRET = "secret_discovery";
+    private static final String CLIENT_SECRET = "3lHh8^aR1@B%0E&BpLhpEa&@^SnW2&GM";
     //资源ID
-    private static final String RESOURCE_ID = "resource_discovery";
+    private static final String RESOURCE_ID = "resource_a";
     //允许的授权范围
-    private static final String[] SCOPES = { "app" };
+    private static final String[] SCOPES = { "app", "web", "wx" };
     //AccessToken有效期（秒）
     private static final Integer ACCESS_TOKEN_VALIDITY_SECONDS = 3600;
     //RefreshToken有效期（秒）
@@ -48,8 +47,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private AuthenticationManager authenticationManager;
     @Autowired
     private AuthExceptionTranslator authExceptionTranslator;
-    @Autowired
-    private ClientDetailsService myClientDetailsService;
+    /*@Autowired
+    private ClientDetailsService myClientDetailsService;*/
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 

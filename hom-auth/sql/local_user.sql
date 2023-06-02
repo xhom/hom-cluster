@@ -20,9 +20,12 @@ CREATE TABLE `local_user`  (
 
 -- ----------------------------
 -- Records of local_user
+-- 123456 - $2a$10$GAFesTx89j8cEEOHDKdT0uTT3lxF.8C2uSFg.RH0T0.BVaEgYtJeW
+-- 123abc - $2a$10$vs2tzE3AfnhgQ/gOTL1KbOIGDXZyov8hQQqMu2uch0d21jCi.EbZ6
+-- abc123 - $2a$10$xdCFPmhIqnCqAP.UIKzFFe.AXRp6QhTiwjAk6LY9dHkJI.RxplGny
 -- ----------------------------
-INSERT INTO `local_user` VALUES (1, 'zhangsan', '123456', 'zs@qq.com', '17723119808', '2023-05-25 15:52:41', '2023-05-25 15:52:46', NULL);
-INSERT INTO `local_user` VALUES (2, 'lisi', '123abc', 'ls@qq.com', '19923248871', '2023-05-25 15:53:21', '2023-05-25 15:53:23', NULL);
-INSERT INTO `local_user` VALUES (3, 'wangwu', 'abc123', 'ww@qq.com', '13811229065', '2023-05-25 15:55:21', '2023-05-25 15:55:23', NULL);
+INSERT INTO `local_user` VALUES (1, 'zhangsan', '$2a$10$GAFesTx89j8cEEOHDKdT0uTT3lxF.8C2uSFg.RH0T0.BVaEgYtJeW', 'zs@qq.com', '17723119808', '2023-05-25 15:52:41', '2023-05-25 15:52:46', NULL);
+INSERT INTO `local_user` VALUES (2, 'lisi', '$2a$10$vs2tzE3AfnhgQ/gOTL1KbOIGDXZyov8hQQqMu2uch0d21jCi.EbZ6', 'ls@qq.com', '19923248871', '2023-05-25 15:53:21', '2023-05-25 15:53:23', NULL);
+INSERT INTO `local_user` VALUES (3, 'wangwu', '$2a$10$xdCFPmhIqnCqAP.UIKzFFe.AXRp6QhTiwjAk6LY9dHkJI.RxplGny', 'ww@qq.com', '13811229065', '2023-05-25 15:55:21', '2023-05-25 15:55:23', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

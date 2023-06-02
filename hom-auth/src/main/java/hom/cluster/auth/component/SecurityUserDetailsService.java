@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,8 +26,6 @@ import java.util.stream.Collectors;
  */
 @Component
 public class SecurityUserDetailsService implements UserDetailsService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
     @Autowired
@@ -51,9 +48,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
             codes.toArray(authorities);
         }
 
-        //正常情况下应该先加密后存在数据库，而不是存明文，然后在此处加密
-        String password = passwordEncoder.encode(localUser.getPassword());
-
         //身份令牌
         JSONObject principal = new JSONObject();
         principal.put("userid", localUser.getId());
@@ -61,7 +55,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
         String principalJson = JSON.toJSONString(principal, SerializerFeature.WriteMapNullValue);
         System.out.println("principal:" + principalJson);
         return User.withUsername(principalJson)
-                .password(password)
+                .password(localUser.getPassword())
                 .authorities(authorities)
                 //.accountExpired(true)//账号过期
                 //.accountLocked(true)//账号锁定

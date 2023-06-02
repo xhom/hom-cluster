@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
@@ -40,13 +38,13 @@ public class JdbcTokenConfig {
     /**
      * 客户端详情服务（存放在数据库）
      */
-    @Bean
+    /*@Bean
     public ClientDetailsService myClientDetailsService() {
         JdbcClientDetailsService clientDetailsService = new JdbcClientDetailsService(dataSource);
         //指定secret的加密方式，保存在数据库的时候也应该采用同样的方式加密
         clientDetailsService.setPasswordEncoder(passwordEncoder);
         return clientDetailsService;
-    }
+    }*/
 
     /*
      * 配置令牌管理

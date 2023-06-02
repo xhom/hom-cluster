@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //定义用户查询的方式和机密器
+        //定义用户查询的方式和加密器
         auth.userDetailsService(userDetailsService);
     }
 
