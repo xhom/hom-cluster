@@ -46,7 +46,7 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
             if(isTokenExists){
                 tokenStore.removeAccessToken(accessToken);
             }
-            result = OAuth2Result.success(1, "退出成功", isTokenExists?"E":"NE");
+            result = OAuth2Result.success(1, "退出成功", isTokenExists?"T":"F");
         }else{
             result = OAuth2Result.failure(0, "退出失败", "Token缺失");
         }
