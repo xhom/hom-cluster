@@ -119,6 +119,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(jwtAccessTokenConverter)//jwtToken转换器
                 .exceptionTranslator(authExceptionTranslator) //自定义异常处理
-                .allowedTokenEndpointRequestMethods(HttpMethod.POST); //Token获取的请求方式
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST, HttpMethod.GET); //Token获取的请求方式
     }
 }
